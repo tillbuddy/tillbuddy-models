@@ -5,6 +5,7 @@ public interface ILocalizedText
     public string Text { get; set; }
     public bool UseTranslation { get; set; }
     public IDictionary<string, string> Translations { get; set; }
+    public string this[string key] { get;set; }
 }
 
 public class LocalizedTextRequest : ILocalizedText
@@ -12,6 +13,33 @@ public class LocalizedTextRequest : ILocalizedText
     public string Text { get; set; } = null!;
     public bool UseTranslation { get; set; }
     public IDictionary<string, string> Translations { get; set; } = null!;
+
+    public string this[string key]
+    {
+        get
+        {
+            if (UseTranslation)
+            {
+                if (Translations.TryGetValue(key, out var value))
+                {
+                    return value;
+                }
+            }
+
+            return Text;
+        }
+        set
+        {
+            if (UseTranslation)
+            {
+                Translations[key] = value;
+            }
+            else
+            {
+                Text = value;
+            }
+        }
+    }
 
     public LocalizedTextRequest()
     {
@@ -48,6 +76,33 @@ public class LocalizedTextResponse : ILocalizedText
     public string Text { get; set; } = null!;
     public bool UseTranslation { get; set; }
     public IDictionary<string, string> Translations { get; set; } = null!;
+
+    public string this[string key]
+    {
+        get
+        {
+            if (UseTranslation)
+            {
+                if (Translations.TryGetValue(key, out var value))
+                {
+                    return value;
+                }
+            }
+
+            return Text;
+        }
+        set
+        {
+            if (UseTranslation)
+            {
+                Translations[key] = value;
+            }
+            else
+            {
+                Text = value;
+            }
+        }
+    }
 
     public static implicit operator LocalizedTextResponse(string text)
     {
