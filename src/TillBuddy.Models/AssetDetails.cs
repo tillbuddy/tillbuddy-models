@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace TillBuddy.SDK.Model;
+namespace TillBuddy.Models;
 
 public interface IAssetDetails
 {
