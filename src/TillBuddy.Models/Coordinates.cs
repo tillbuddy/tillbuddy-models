@@ -1,18 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace TillBuddy.Models;
 
-namespace TillBuddy.Models;
-
-public class CoordinatesRequest
+public interface ICoordinates
 {
     public double Latitude { get; set; }
     public double Longitude { get; set; }
 }
 
-public class CoordinatesResponse
+public class CoordinatesRequest : ICoordinates
+{
+    public double Latitude { get; set; }
+    public double Longitude { get; set; }
+}
+
+public class CoordinatesResponse : ICoordinates
 {
     public double Latitude { get; set; }
     public double Longitude { get; set; }
