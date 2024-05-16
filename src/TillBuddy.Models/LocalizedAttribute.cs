@@ -2,7 +2,7 @@
 
 namespace TillBuddy.Models;
 
-public interface IAttribute
+public interface ILocalizedAttribute
 {
     public string AttributeId { get; set; }
     public string DisplayName { get; set; }
@@ -18,7 +18,7 @@ public interface IAttribute
     public IEnumerable<ILocalizedText>? LocalizedValues { get; set; }
 }
 
-public class AttributeRequest : IAttribute
+public class LocalizedAttributeRequest : IAttribute
 {
     public string AttributeId { get; set; } = null!;
     public string DisplayName { get; set; } = null!;
@@ -49,7 +49,7 @@ public class AttributeRequest : IAttribute
     public IEnumerable<ILocalizedText>? LocalizedValues { get; set; }
 }
 
-public class AttributeResponse : IAttribute
+public class LocalizedAttributeResponse : IAttribute
 {
     public string AttributeId { get; set; } = null!;
     public string DisplayName { get; set; } = null!;
@@ -73,9 +73,9 @@ public class AttributeResponse : IAttribute
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public DateTime? DateTime { get; set; }
 
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [System.Text.Json.Serialization.JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public IEnumerable<string>? Values { get; set; }
 
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [System.Text.Json.Serialization.JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public IEnumerable<ILocalizedText>? LocalizedValues { get; set; }
 }
