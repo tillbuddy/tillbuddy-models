@@ -18,7 +18,7 @@ public interface IAttribute
     public IEnumerable<ILocalizedText>? LocalizedValues { get; set; }
 }
 
-public class AttributeRequest
+public class AttributeRequest : IAttribute
 {
     public string AttributeId { get; set; } = null!;
     public string DisplayName { get; set; } = null!;
@@ -49,7 +49,7 @@ public class AttributeRequest
     public IEnumerable<ILocalizedText>? LocalizedValues { get; set; }
 }
 
-public class AttributeResponse
+public class AttributeResponse : IAttribute
 {
     public string AttributeId { get; set; } = null!;
     public string DisplayName { get; set; } = null!;
