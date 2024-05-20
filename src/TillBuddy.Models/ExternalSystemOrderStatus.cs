@@ -1,4 +1,4 @@
-﻿namespace TillBuddy.SDK.Model.Orders;
+﻿namespace TillBuddy.Models;
 
 public enum ExternalSystemOrderStatus
 {
