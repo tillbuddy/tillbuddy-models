@@ -76,11 +76,4 @@ public static class StoreContactInformationMapper
             Email = source.Email
         };
     }
-
-    public static string MapToString(this IMoney source)
-    {
-        if (source == null) throw new ArgumentNullException(nameof(source));
-
-        return new Money(source.Amount, source.Currency).ToString();
-    }
 }
