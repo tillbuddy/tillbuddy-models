@@ -47,14 +47,14 @@ public class AddressRequest : Address
 {
     public AddressRequest() : base() { }
 
-    public AddressRequest(string addressLine, string city, string postalCode, string country, string? coordinates = null, Coordinates? location = null) : base(addressLine, city, postalCode, country, coordinates) { }
+    public AddressRequest(string addressLine, string city, string postalCode, string country, string? coordinates = null, Coordinates? location = null) : base(addressLine, city, postalCode, country, coordinates, location) { }
 }
 
 public class AddressResponse : Address
 {
     public AddressResponse() { }
     
-    public AddressResponse(string addressLine, string city, string postalCode, string country, string? coordinates = null, Coordinates? location = null) : base(addressLine, city, postalCode, country, coordinates) { }
+    public AddressResponse(string addressLine, string city, string postalCode, string country, string? coordinates = null, Coordinates? location = null) : base(addressLine, city, postalCode, country, coordinates, location) { }
 }
 
 public static class AddressMapper

@@ -2,7 +2,7 @@
 
 namespace TillBuddy.Models;
 
-public class Currency
+public class Currency : ValueObject
 {
     private const string RegexPattern = "^[a-zA-Z]{3}$";
     private static readonly Regex Regex = new Regex(RegexPattern);
@@ -56,5 +56,10 @@ public class Currency
     public override string ToString()
     {
         return Value;
+    }
+
+    protected override IEnumerable<object> GetEqualityComponents()
+    {
+        yield return Value;
     }
 }

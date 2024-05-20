@@ -1,4 +1,5 @@
-﻿namespace TillBuddy.Models;
+﻿
+namespace TillBuddy.Models;
 
 public interface ICash
 {
@@ -8,7 +9,7 @@ public interface ICash
 
 }
 
-public class Cash : ICash
+public class Cash : ValueObject, ICash
 {
     public string UserId { get; set; } = null!;
     public IMoney Amount { get; set; } = null!;
@@ -40,6 +41,14 @@ public class Cash : ICash
         UserId = userId.ToString();        
         Amount = amount;
         RegisteredAt = registeredAt;
+    }
+
+    protected override IEnumerable<object> GetEqualityComponents()
+    {
+        yield return UserId;
+        yield return Amount.Amount;
+        yield return Amount.Currency;
+        yield return RegisteredAt;
     }
 }
 

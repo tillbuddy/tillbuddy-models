@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using System;
 
 namespace TillBuddy.Models;
 
@@ -9,7 +8,7 @@ public interface ICoordinates
     public double Longitude { get; set; }
 }
 
-public class Coordinates : ICoordinates
+public class Coordinates : ValueObject, ICoordinates
 {
     private double _latitude;
 
@@ -112,19 +111,10 @@ public class Coordinates : ICoordinates
         }
     }
 
-    public bool Equals(Coordinates other)
+    protected override IEnumerable<object> GetEqualityComponents()
     {
-        if ((object)other == null)
-        {
-            return false;
-        }
-
-        if (!Latitude.Equals(other.Latitude))
-        {
-            return false;
-        }
-
-        return Longitude.Equals(other.Longitude);
+        yield return _longitude;
+        yield return _latitude;
     }
 
     public override string ToString()

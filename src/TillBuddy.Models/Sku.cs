@@ -1,6 +1,6 @@
 ﻿namespace TillBuddy.Models;
 
-public class Sku
+public class Sku : ValueObject
 {
     public string Value { get; set; }
 
@@ -39,5 +39,10 @@ public class Sku
     public static implicit operator string(Sku sku)
     {
         return sku.ToString();
+    }
+
+    protected override IEnumerable<object> GetEqualityComponents()
+    {
+        yield return Value;
     }
 }

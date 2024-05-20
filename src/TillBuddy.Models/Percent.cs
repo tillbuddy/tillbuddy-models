@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace TillBuddy.Models;
 
-public class Percent 
+public class Percent : ValueObject
 {
     private const string RegexPattern = "((?<number>.+)%$)";
     private static readonly Regex Regex = new Regex(RegexPattern);
@@ -68,5 +68,11 @@ public class Percent
     public override string ToString()
     {
         return $"{Number.ToString("F2", CultureInfo.InvariantCulture)}%";
+    }
+
+    protected override IEnumerable<object> GetEqualityComponents()
+    {
+        yield return Number;
+        yield return Percentage;
     }
 }

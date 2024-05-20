@@ -9,7 +9,7 @@ public interface IMoney
     public string Currency { get; set; }
 }
 
-public class Money : IMoney
+public class Money : ValueObject, IMoney
 {
     private const string RegexPattern = "((?<amount>.+) (?<currency>.+)$)";
     private static readonly Regex Regex = new Regex(RegexPattern);
@@ -133,6 +133,12 @@ public class Money : IMoney
 
         return this;
     }
+
+    protected override IEnumerable<object> GetEqualityComponents()
+    {
+        yield return Amount;
+        yield return Currency;
+    }
 }
 
 public class MoneyRequest : Money
@@ -142,7 +148,6 @@ public class MoneyRequest : Money
 public class MoneyResponse : Money
 {
 }
-
 
 public static class MoneyMapper
 {
