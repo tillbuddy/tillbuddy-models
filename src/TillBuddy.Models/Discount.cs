@@ -23,7 +23,7 @@ public partial class Discount : IDiscount
     }
 
     public Discount(
-        Money money,
+        IMoney money,
         decimal percent,
         string intention)
     {
@@ -35,14 +35,14 @@ public partial class Discount : IDiscount
 
 public class DiscountRequest : Discount
 {
-    public DiscountRequest(Money money, decimal percent, string intention) : base(money, percent, intention) { }
+    public DiscountRequest(IMoney money, decimal percent, string intention) : base(money, percent, intention) { }
 
     public DiscountRequest() : base() { }
 }
 
 public class DiscountResponse : Discount
 {
-    public DiscountResponse(Money money, decimal percent, string intention) : base(money, percent, intention) { }
+    public DiscountResponse(IMoney money, decimal percent, string intention) : base(money, percent, intention) { }
 
     public DiscountResponse() : base() { }
 }

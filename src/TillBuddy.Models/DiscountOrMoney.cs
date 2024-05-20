@@ -31,7 +31,7 @@ public class DiscountOrMoney : IDiscountOrMoney
     }
 
     public DiscountOrMoney(
-        Money? money,
+        IMoney? money,
         decimal? percent,
         string? intention,
         decimal? amount,
@@ -73,8 +73,14 @@ public class DiscountOrMoney : IDiscountOrMoney
 
 public class DiscountOrMoneyRequest : DiscountOrMoney
 {
+    public DiscountOrMoneyRequest() : base() { }
+
+    public DiscountOrMoneyRequest(IMoney? money, decimal? percent, string? intention, decimal? amount, string? currency) : base(money, percent, intention, amount, currency) { }
 }
 
 public class DiscountOrMoneyResponse : DiscountOrMoney
 {
+    public DiscountOrMoneyResponse() : base() { }
+
+    public DiscountOrMoneyResponse(IMoney? money, decimal? percent, string? intention, decimal? amount, string? currency) : base(money, percent, intention, amount, currency) { }
 }
