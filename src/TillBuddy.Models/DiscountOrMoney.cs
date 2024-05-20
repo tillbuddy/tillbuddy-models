@@ -1,6 +1,6 @@
 ﻿namespace TillBuddy.Models;
 
-public interface IDiscountOrMoneyRequest
+public interface IDiscountOrMoney
 {
     public IMoney? Money { get; set; }
 
@@ -13,9 +13,9 @@ public interface IDiscountOrMoneyRequest
     public string? Currency { get; set; }
 }
 
-public class DiscountOrMoneyRequest
+public class DiscountOrMoney : IDiscountOrMoney
 {
-    public MoneyRequest? Money { get; set; }
+    public IMoney? Money { get; set; }
 
     public decimal? Percent { get; set; }
 
@@ -24,4 +24,57 @@ public class DiscountOrMoneyRequest
     public decimal? Amount { get; set; }
 
     public string? Currency { get; set; }
+
+    public DiscountOrMoney()
+    {
+
+    }
+
+    public DiscountOrMoney(
+        Money? money,
+        decimal? percent,
+        string? intention,
+        decimal? amount,
+        string? currency)
+    {
+        Money = money;
+        Percent = percent;
+        Intention = intention;
+        Amount = amount;
+        Currency = currency;
+    }
+
+    public decimal? GetAmount()
+    {
+        // old version
+        if (Amount != null)
+            return Amount;
+
+        // new version
+        if (Money != null)
+            return Money.Amount;
+
+        return null;
+    }
+
+    public IMoney? GetMoney()
+    {
+        // old version
+        if (Amount != null && Currency != null)
+            return new Money(Amount.Value, Currency);
+
+        // new version
+        if (Money != null)
+            return Money;
+
+        return null;
+    }
+}
+
+public class DiscountOrMoneyRequest : DiscountOrMoney
+{
+}
+
+public class DiscountOrMoneyResponse : DiscountOrMoney
+{
 }
