@@ -1,11 +1,9 @@
-﻿using System;
-
-namespace TillBuddy.Models;
+﻿namespace TillBuddy.Models;
 
 public interface ICash
 {
     public string UserId { get; set; }
-    public string Amount { get; set; }
+    public IMoney Amount { get; set; }
     public DateTime RegisteredAt { get; set; }
 
 }
@@ -13,7 +11,7 @@ public interface ICash
 public class Cash : ICash
 {
     public string UserId { get; set; } = null!;
-    public string Amount { get; set; } = null!;
+    public IMoney Amount { get; set; } = null!;
     public DateTime RegisteredAt { get; set; }
 
     public Cash() { }
@@ -27,20 +25,20 @@ public class Cash : ICash
         if (string.IsNullOrEmpty(amount)) throw new ArgumentNullException(nameof(amount));
 
         UserId = userId;
-        Amount = amount;
+        Amount = Money.Parse(amount);
         RegisteredAt = registeredAt;
     }
 
     public Cash(
         Guid userId,
-        Money amount,
+        IMoney amount,
         DateTime registeredAt)
     {
         if (userId == Guid.Empty) throw new ArgumentNullException(nameof(userId));
         if (amount is null) throw new ArgumentNullException(nameof(amount));
 
         UserId = userId.ToString();        
-        Amount = amount.ToString();
+        Amount = amount;
         RegisteredAt = registeredAt;
     }
 }
