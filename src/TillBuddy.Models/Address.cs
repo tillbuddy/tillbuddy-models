@@ -19,14 +19,42 @@ public class Address : IAddress
     public string Country { get; set; } = null!;
     public ICoordinates? Location { get; set; }
     public string? Coordinates { get; set; }
+
+    public Address()
+    {
+
+    }
+
+    public Address(
+        string addressLine,
+        string city,
+        string postalCode,
+        string country,
+        string? coordinates = null,
+        Coordinates? location = null)
+    {
+        AddressLine = addressLine;
+        City = city;
+        PostalCode = postalCode;
+        Country = country;
+        Coordinates = coordinates;
+        Location = location;
+    }
+
 }
 
 public class AddressRequest : Address
 {
+    public AddressRequest() : base() { }
+
+    public AddressRequest(string addressLine, string city, string postalCode, string country, string? coordinates = null, Coordinates? location = null) : base(addressLine, city, postalCode, country, coordinates) { }
 }
 
 public class AddressResponse : Address
 {
+    public AddressResponse() { }
+    
+    public AddressResponse(string addressLine, string city, string postalCode, string country, string? coordinates = null, Coordinates? location = null) : base(addressLine, city, postalCode, country, coordinates) { }
 }
 
 public static class AddressMapper
