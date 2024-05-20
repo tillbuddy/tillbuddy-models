@@ -46,3 +46,36 @@ public class DiscountResponse : Discount
 
     public DiscountResponse() : base() { }
 }
+
+public static class DiscountMapper
+{
+    public static DiscountRequest? MapToRequest(this IDiscount? discount)
+    {
+        if (discount == null)
+        {
+            return null;
+        }
+
+        var money = new Money(discount.Money.Amount, discount.Money.Currency);
+
+        return new DiscountRequest(
+            money,
+            discount.Percent,
+            discount.Intention);
+    }
+
+    public static DiscountResponse? MapToResponse(this IDiscount? discount)
+    {
+        if (discount == null)
+        {
+            return null;
+        }
+
+        var money = new Money(discount.Money.Amount, discount.Money.Currency);
+
+        return new DiscountResponse(
+            money,
+            discount.Percent,
+            discount.Intention);
+    }
+}

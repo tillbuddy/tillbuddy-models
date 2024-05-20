@@ -25,7 +25,7 @@ public class Payment : IPayment
 
     public Payment(
        string type,
-       Money amount,
+       IMoney amount,
        DateTime received,
        int? cardIssuerId,
        string? cardIssuerName,
