@@ -8,7 +8,7 @@ public interface ILocalizedText
     public string this[string key] { get;set; }
 }
 
-public class LocalizedTextRequest : ILocalizedText
+public class LocalizedText : ILocalizedText
 {
     public string Text { get; set; } = null!;
     public bool UseTranslation { get; set; }
@@ -41,11 +41,43 @@ public class LocalizedTextRequest : ILocalizedText
         }
     }
 
-    public LocalizedTextRequest()
+    public LocalizedText()
     {
         Text = string.Empty;
         Translations = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
     }
+
+    public static implicit operator LocalizedText(string text)
+    {
+        return new LocalizedTextRequest { Text = text, UseTranslation = false };
+    }
+
+    public static implicit operator LocalizedText(Dictionary<string, string> translations)
+    {
+        return new(translations);
+    }
+
+    public LocalizedText(IDictionary<string, string> translations)
+    {
+        Text = string.Empty;
+        Translations = translations;
+        UseTranslation = true;
+    }
+
+    public LocalizedText(string text)
+    {
+        Text = text;
+        Translations = new Dictionary<string, string>();
+    }
+}
+
+public class LocalizedTextRequest : LocalizedText
+{
+    public LocalizedTextRequest() { }
+
+    public LocalizedTextRequest(IDictionary<string, string> translations) : base(translations) { }
+
+    public LocalizedTextRequest(string text) : base(text) { }
 
     public static implicit operator LocalizedTextRequest(string text)
     {        
@@ -56,56 +88,23 @@ public class LocalizedTextRequest : ILocalizedText
     {
         return new (translations);
     }
-
-    public LocalizedTextRequest(IDictionary<string, string> translations)
-    {
-        Text = string.Empty;
-        Translations = translations;
-        UseTranslation = true;
-    }
-
-    public LocalizedTextRequest(string text)
-    {
-        Text = text;
-        Translations = new Dictionary<string, string>();
-    }
 }
 
-public class LocalizedTextResponse : ILocalizedText
+public class LocalizedTextResponse : LocalizedText
 {
-    public string Text { get; set; } = null!;
-    public bool UseTranslation { get; set; }
-    public IDictionary<string, string> Translations { get; set; } = null!;
+    public LocalizedTextResponse() { }
 
-    public string this[string key]
-    {
-        get
-        {
-            if (UseTranslation)
-            {
-                if (Translations.TryGetValue(key, out var value))
-                {
-                    return value;
-                }
-            }
+    public LocalizedTextResponse(IDictionary<string, string> translations) : base(translations) { }
 
-            return Text;
-        }
-        set
-        {
-            if (UseTranslation)
-            {
-                Translations[key] = value;
-            }
-            else
-            {
-                Text = value;
-            }
-        }
-    }
+    public LocalizedTextResponse(string text) : base(text) { }
 
     public static implicit operator LocalizedTextResponse(string text)
     {
         return new LocalizedTextResponse { Text = text, UseTranslation = false };
+    }
+
+    public static implicit operator LocalizedTextResponse(Dictionary<string, string> translations)
+    {
+        return new (translations);
     }
 }

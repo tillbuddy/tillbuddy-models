@@ -18,7 +18,7 @@ public interface IAttribute
     public IEnumerable<ILocalizedText>? LocalizedValues { get; set; }
 }
 
-public class AttributeRequest : IAttribute
+public class Attribute : IAttribute
 {
     public string AttributeId { get; set; } = null!;
     public string DisplayName { get; set; } = null!;
@@ -49,33 +49,10 @@ public class AttributeRequest : IAttribute
     public IEnumerable<ILocalizedText>? LocalizedValues { get; set; }
 }
 
-public class AttributeResponse : IAttribute
+public class AttributeRequest : Attribute
 {
-    public string AttributeId { get; set; } = null!;
-    public string DisplayName { get; set; } = null!;
-    public string Value { get; set; } = null!;
+}
 
-    [JsonConverter(typeof(JsonStringEnumConverter))]
-    public DataType DataType { get; set; }
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public ILocalizedText? LocalizedValue { get; set; }
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public int? Integer { get; set; }
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public decimal? Decimal { get; set; }
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public bool? Bool { get; set; }
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public DateTime? DateTime { get; set; }
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public IEnumerable<string>? Values { get; set; }
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public IEnumerable<ILocalizedText>? LocalizedValues { get; set; }
+public class AttributeResponse : Attribute
+{
 }

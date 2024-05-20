@@ -6,16 +6,17 @@ public interface IMoney
     public string Currency { get; set; }
 }
 
-public class MoneyRequest : IMoney
+public class Money : IMoney
 {
     public decimal Amount { get; set; }
 
     public string Currency { get; set; } = null!;
 }
 
-public class MoneyResponse : IMoney
+public class MoneyRequest : Money
 {
-    public decimal Amount { get; set; }
+}
 
-    public string Currency { get; set; } = null!;
+public class MoneyResponse : Money
+{
 }

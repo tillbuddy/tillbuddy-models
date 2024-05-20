@@ -19,7 +19,7 @@ public interface ILocalizedAssetReference
     public ILocalizedText Url { get; set; }
 }
 
-public class LocalizedAssetReferenceRequest : ILocalizedAssetReference
+public class LocalizedAssetReference : ILocalizedAssetReference
 {
     [JsonPropertyName("group")]
     public string Group { get; set; } = string.Empty;
@@ -37,20 +37,10 @@ public class LocalizedAssetReferenceRequest : ILocalizedAssetReference
     public ILocalizedText Url { get; set; } = null!;
 }
 
-public class LocalizedAssetReferenceResponse : ILocalizedAssetReference
+public class LocalizedAssetReferenceRequest : LocalizedAssetReference
 {
-    [JsonPropertyName("group")]
-    public string Group { get; set; } = string.Empty;
+}
 
-    /// <summary>
-    /// An asset can point to an asset or an external url
-    /// </summary>
-    [JsonPropertyName("assetId")]
-    public Guid? AssetId { get; set; }
-
-    [JsonPropertyName("text")]
-    public ILocalizedText Text { get; set; } = null!;
-
-    [JsonPropertyName("url")]
-    public ILocalizedText Url { get; set; } = null!;
+public class LocalizedAssetReferenceResponse : LocalizedAssetReference
+{ 
 }

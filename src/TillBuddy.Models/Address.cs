@@ -10,7 +10,7 @@ public interface IAddress
     public string? Coordinates { get; set; }
 }
 
-public class AddressRequest : IAddress
+public class Address : IAddress
 {
     public string AddressLine { get; set; } = null!;
     public string City { get; set; } = null!;
@@ -20,12 +20,10 @@ public class AddressRequest : IAddress
     public string? Coordinates { get; set; }
 }
 
-public class AddressResponse : IAddress
+public class AddressRequest : Address
 {
-    public string AddressLine { get; set; } = null!;
-    public string City { get; set; } = null!;
-    public string PostalCode { get; set; } = null!;
-    public string Country { get; set; } = null!;
-    public ICoordinates? Location { get; set; }
-    public string? Coordinates { get; set; }
+}
+
+public class AddressResponse : Address
+{
 }

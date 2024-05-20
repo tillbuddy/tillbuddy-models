@@ -6,14 +6,16 @@ public interface ICoordinates
     public double Longitude { get; set; }
 }
 
-public class CoordinatesRequest : ICoordinates
+public class Coordinates : ICoordinates
 {
     public double Latitude { get; set; }
     public double Longitude { get; set; }
 }
 
-public class CoordinatesResponse : ICoordinates
+public class CoordinatesRequest : Coordinates
 {
-    public double Latitude { get; set; }
-    public double Longitude { get; set; }
+}
+
+public class CoordinatesResponse : Coordinates
+{
 }

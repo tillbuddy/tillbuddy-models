@@ -9,7 +9,7 @@ public interface IDiscount
     public string Intention { get; set; }
 }
 
-public class DiscountRequest : IDiscount
+public class Discount : IDiscount
 {
     public IMoney Money { get; set; } = null!;
 
@@ -18,11 +18,10 @@ public class DiscountRequest : IDiscount
     public string Intention { get; set; } = null!;
 }
 
-public class DiscountResponse : IDiscount
+public class DiscountRequest : Discount
 {
-    public IMoney Money { get; set; } = null!;
+}
 
-    public decimal Percent { get; set; }
-
-    public string Intention { get; set; } = null!;
+public class DiscountResponse : Discount
+{
 }

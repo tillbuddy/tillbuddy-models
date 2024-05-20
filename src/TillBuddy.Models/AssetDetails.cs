@@ -41,7 +41,7 @@ public interface IAssetDetails
     public IEnumerable<string> Tags { get; set; }
 }
 
-public class AssetDetailsRequest : IAssetDetails
+public class AssetDetails : IAssetDetails
 {
     [JsonPropertyName("assetId")]
     public string AssetId { get; set; } = null!;
@@ -80,41 +80,10 @@ public class AssetDetailsRequest : IAssetDetails
     public IEnumerable<string> Tags { get; set; } = null!;
 }
 
-public class AssetDetailsResponse : IAssetDetails
+public class AssetDetailsRequest : AssetDetails
+{  
+}
+
+public class AssetDetailsResponse : AssetDetails
 {
-    [JsonPropertyName("assetId")]
-    public string AssetId { get; set; } = null!;
-
-    [JsonPropertyName("name")]
-    public string Name { get; set; } = null!;
-
-    [JsonPropertyName("description")]
-    public string Description { get; set; } = null!;
-
-    [JsonPropertyName("url")]
-    public string Url { get; set; } = null!;
-
-    [JsonPropertyName("altText")]
-    public string AltText { get; set; } = null!;
-
-    [JsonPropertyName("assetType")]
-    public string AssetType { get; set; } = null!;
-
-    [JsonPropertyName("purpose")]
-    public string Purpose { get; set; } = null!;
-
-    [JsonPropertyName("filename")]
-    public string Filename { get; set; } = null!;
-
-    [JsonPropertyName("contentType")]
-    public string ContentType { get; set; } = null!;
-
-    [JsonPropertyName("fileSize")]
-    public string FileSize { get; set; } = null!;
-
-    [JsonPropertyName("attributes")]
-    public IDictionary<string, string> Attributes { get; set; } = null!;
-
-    [JsonPropertyName("tags")]
-    public IEnumerable<string> Tags { get; set; } = null!;
 }
