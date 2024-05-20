@@ -1,6 +1,4 @@
-﻿using System.Net.NetworkInformation;
-
-namespace TillBuddy.Models;
+﻿namespace TillBuddy.Models;
 
 public interface IStoreContactInformation
 {
@@ -10,20 +8,45 @@ public interface IStoreContactInformation
     public string Email { get; set; }
 }
 
-public class StoreContactInformation
-{
+public class StoreContactInformation : ValueObject, IStoreContactInformation
+{    
     public IAddress PhysicalAddress { get; set; } = null!;
     public IAddress ContactAddress { get; set; } = null!;
     public string Phone { get; set; } = null!;
     public string Email { get; set; } = null!;
+
+    public StoreContactInformation() { }
+
+    public StoreContactInformation(IAddress physicalAddress,
+                                   IAddress contactAddress,
+                                   string phone,
+                                   string email)
+    {
+        PhysicalAddress = physicalAddress;
+        ContactAddress = contactAddress;
+        Phone = phone;
+        Email = email;
+    }
+
+    protected override IEnumerable<object> GetEqualityComponents()
+    {
+        yield return PhysicalAddress;
+        yield return ContactAddress;
+        yield return Phone;
+        yield return Email;
+    }
 }
 
 public class StoreContactInformationRequest : StoreContactInformation
 {
+    public StoreContactInformationRequest() { }
+    public StoreContactInformationRequest(IAddress physicalAddress, IAddress contactAddress, string phone, string email) : base(physicalAddress, contactAddress, phone, email) { }
 }
 
 public class StoreContactInformationResponse : StoreContactInformation
 {
+    public StoreContactInformationResponse() { }
+    public StoreContactInformationResponse(IAddress physicalAddress, IAddress contactAddress, string phone, string email) : base(physicalAddress, contactAddress, phone, email) { }
 }
 
 public static class StoreContactInformationMapper
