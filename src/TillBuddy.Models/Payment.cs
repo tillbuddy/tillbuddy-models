@@ -67,3 +67,57 @@ public class PaymentResponse
     public string? Vendor { get; set; } = null!;
     public ICardTransactionDetails? Transaction { get; set; } = null!;
 }
+
+
+public static class PaymentMapper
+{
+    public static PaymentResponse MapToResponse(this IPayment source)
+    {
+        if (source == null) throw new ArgumentNullException(nameof(source));
+
+        return new()
+        {
+            Type = source.Type,
+            Amount = source.Amount.MapToString(),
+            Received = source.Received,
+            CardIssuerId = source.CardIssuerId,
+            CardIssuerName = source.CardIssuerName,
+            CreditNoteNumber = source.CreditNoteNumber,
+            Vendor = source.Vendor,
+            Transaction = source.Transaction?.MapToResponse(),
+        };
+    }
+
+    public static PaymentRequest MapToRequest(this IPayment source)
+    {
+        if (source == null) throw new ArgumentNullException(nameof(source));
+
+        return new()
+        {
+           Type = source.Type,
+           Amount = source.Amount.MapToString(),
+           Received = source.Received,
+           CardIssuerId = source.CardIssuerId,
+           CardIssuerName = source.CardIssuerName,
+           CreditNoteNumber = source.CreditNoteNumber,
+           Vendor = source.Vendor,
+           Transaction = source.Transaction?.MapToRequest(),
+        };
+    }
+
+    public static IEnumerable<PaymentRequest> MapToRequest(this IEnumerable<IPayment> payments)
+    {
+        foreach (var payment in payments)
+        {
+            yield return payment.MapToRequest();
+        }
+    }
+
+    public static IEnumerable<PaymentResponse> MapToResponse(this IEnumerable<IPayment> payments)
+    {
+        foreach (var payment in payments)
+        {
+            yield return payment.MapToResponse();
+        }
+    }
+}

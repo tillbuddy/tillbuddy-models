@@ -140,3 +140,28 @@ public class CoordinatesRequest : Coordinates
 public class CoordinatesResponse : Coordinates
 {
 }
+
+public static class CoordinatesMapper
+{
+    public static CoordinatesResponse MapToResponse(this ICoordinates source)
+    {
+        if (source == null) throw new ArgumentNullException(nameof(source));
+
+        return new()
+        {
+            Latitude = source.Latitude,
+            Longitude = source.Longitude
+        };
+    }
+
+    public static CoordinatesRequest MapToRequest(this ICoordinates source)
+    {
+        if (source == null) throw new ArgumentNullException(nameof(source));
+
+        return new()
+        {
+            Latitude = source.Latitude,
+            Longitude = source.Longitude
+        };
+    }
+}

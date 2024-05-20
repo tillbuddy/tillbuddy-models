@@ -34,6 +34,33 @@ public class CardTransactionDetailsRequest : CardTransactionDetails
 {
 }
 
-public class TransactionResponse : CardTransactionDetails
+public class CardTransactionDetailsResponse : CardTransactionDetails
 {
+}
+
+public static class CardTransactionDetailsMapper
+{
+    public static CardTransactionDetailsResponse MapToResponse(this ICardTransactionDetails source)
+    {
+        if (source == null) throw new ArgumentNullException(nameof(source));
+
+        return new()
+        {
+            AcquirerTransactionId = source.AcquirerTransactionId,
+            EcrTransactionId = source.EcrTransactionId,
+            TerminalTransactionId = source.TerminalTransactionId,
+        };
+    }
+
+    public static CardTransactionDetailsRequest MapToRequest(this ICardTransactionDetails source)
+    {
+        if (source == null) throw new ArgumentNullException(nameof(source));
+
+        return new()
+        {
+            AcquirerTransactionId = source.AcquirerTransactionId,
+            EcrTransactionId = source.EcrTransactionId,
+            TerminalTransactionId = source.TerminalTransactionId,
+        };
+    }
 }

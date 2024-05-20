@@ -142,3 +142,36 @@ public class MoneyRequest : Money
 public class MoneyResponse : Money
 {
 }
+
+
+public static class MoneyMapper
+{
+    public static MoneyResponse MapToResponse(this IMoney source)
+    {
+        if (source == null) throw new ArgumentNullException(nameof(source));
+
+        return new()
+        {
+            Amount = source.Amount,
+            Currency = source.Currency,
+        };
+    }
+
+    public static MoneyRequest MapToRequest(this IMoney source)
+    {
+        if (source == null) throw new ArgumentNullException(nameof(source));
+
+        return new()
+        {
+            Amount = source.Amount,
+            Currency = source.Currency,
+        };
+    }
+
+    public static string MapToString(this IMoney source)
+    {
+        if (source == null) throw new ArgumentNullException(nameof(source));
+
+        return new Money(source.Amount, source.Currency).ToString();
+    }
+}
