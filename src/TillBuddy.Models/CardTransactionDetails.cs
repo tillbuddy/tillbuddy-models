@@ -16,6 +16,18 @@ public class CardTransactionDetails : ICardTransactionDetails
     public string? TerminalTransactionId { get; set; }
 
     public string? AcquirerTransactionId { get; set; }
+
+    public CardTransactionDetails()
+    {
+        
+    }
+
+    public CardTransactionDetails(string? ecrTransactionId, string? terminalTransactionId, string? acquirerTransactionId)
+    {
+        EcrTransactionId = ecrTransactionId;
+        TerminalTransactionId = terminalTransactionId;
+        AcquirerTransactionId = acquirerTransactionId;
+    }
 }
 
 public class CardTransactionDetailsRequest : CardTransactionDetails
