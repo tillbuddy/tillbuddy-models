@@ -51,6 +51,7 @@ public class Address : IAddress
             Coordinates = Coordinates
         };
     }
+
     public AddressRequest MapToRequest()
     {
         return new()

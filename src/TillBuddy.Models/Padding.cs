@@ -42,10 +42,10 @@ public class Padding : IPadding
     {
         return new()
         {
-            Top = source.Top,
-            Right = source.Right,
-            Bottom = source.Bottom,
-            Left = source.Left
+            Top = Top,
+            Right = Right,
+            Bottom = Bottom,
+            Left = Left
         };
     }
 
@@ -53,10 +53,10 @@ public class Padding : IPadding
     {
         return new()
         {
-            Top = source.Top,
-            Right = source.Right,
-            Bottom = source.Bottom,
-            Left = source.Left
+            Top = Top,
+            Right = Right,
+            Bottom = Bottom,
+            Left = Left
         };
     }
 }
