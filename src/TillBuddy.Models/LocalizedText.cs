@@ -1,6 +1,6 @@
 ﻿namespace TillBuddy.Models;
 
-public interface ILocalizedText
+public interface ILocalizedText : ICloneable
 {
     public string Text { get; set; }
     public bool UseTranslation { get; set; }
@@ -41,6 +41,13 @@ public class LocalizedText : ILocalizedText
         }
     }
 
+    public LocalizedText(ILocalizedText localizedText)
+    {
+        Text = localizedText.Text;
+        UseTranslation = localizedText.UseTranslation;
+        Translations = CloneDictionary(localizedText.Translations);
+    }
+
     public LocalizedText()
     {
         Text = string.Empty;
@@ -68,6 +75,37 @@ public class LocalizedText : ILocalizedText
     {
         Text = text;
         Translations = new Dictionary<string, string>();
+    }
+
+    private Dictionary<string, string> CloneDictionary(IDictionary<string, string> source)
+    {
+        var target = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
+
+        if (source != null)
+        {
+            foreach (var (key, value) in source)
+            {
+                target[key] = value;
+            }
+        }
+
+        return target;
+    }
+
+    public object Clone()
+    {
+        var clone = new LocalizedText
+        {
+            Text = Text,
+            UseTranslation = UseTranslation
+        };
+
+        if (Translations != null)
+        {
+            clone.Translations = CloneDictionary(Translations);
+        }
+
+        return clone;
     }
 }
 

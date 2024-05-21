@@ -2,8 +2,9 @@
 
 namespace TillBuddy.Models;
 
-public interface ILocalizedAssetReference
+public interface ILocalizedAssetReference : ICloneable
 {
+    [JsonPropertyName("group")]
     public string Group { get; set; }
 
     /// <summary>
@@ -35,6 +36,19 @@ public class LocalizedAssetReference : ILocalizedAssetReference
 
     [JsonPropertyName("url")]
     public ILocalizedText Url { get; set; } = null!;
+
+    public object Clone()
+    {
+        var clone = new LocalizedAssetReference
+        {
+            Group = Group,
+            AssetId = AssetId,
+            Text = new LocalizedText(Text),
+            Url = new LocalizedText(Url)
+        };
+
+        return clone;
+    }
 }
 
 public class LocalizedAssetReferenceRequest : LocalizedAssetReference
