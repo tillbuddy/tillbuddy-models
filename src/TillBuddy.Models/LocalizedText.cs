@@ -6,6 +6,7 @@ public interface ILocalizedText : ICloneable
     public bool UseTranslation { get; set; }
     public IDictionary<string, string> Translations { get; set; }
     public string this[string key] { get;set; }
+
 }
 
 public class LocalizedText : ILocalizedText

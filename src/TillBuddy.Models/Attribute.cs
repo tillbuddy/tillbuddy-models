@@ -1,5 +1,4 @@
-﻿#nullable enable
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace TillBuddy.Models;
 
@@ -8,15 +7,43 @@ public interface IAttribute : ICloneable
     public string AttributeId { get; set; }
     public string DisplayName { get; set; }
     public string Value { get; set; }
-
     public DataType DataType { get; set; }
-    public ILocalizedText? LocalizedValue { get; set; }
+    [JsonConverter(typeof(LocalizedText))]
+    public LocalizedText? LocalizedValue { get; set; }
     public int? Integer { get; set; }
     public decimal? Decimal { get; set; }
     public bool? Bool { get; set; }
     public DateTime? DateTime { get; set; }
     public IEnumerable<string>? Values { get; set; }
-    public IEnumerable<ILocalizedText>? LocalizedValues { get; set; }
+    [JsonConverter(typeof(List<LocalizedText>))]
+    public IEnumerable<LocalizedText>? LocalizedValues { get; set; }
+
+    public T Apply<T>(T target) where T : IAttribute
+    {
+        target.AttributeId = AttributeId;
+        target.DisplayName = DisplayName;
+        target.Value = Value;
+        target.DataType = DataType;
+        target.Integer = Integer;
+        target.Decimal = Decimal;
+        target.Bool = Bool;
+        target.DateTime = DateTime;
+        target.LocalizedValue = (LocalizedText?)LocalizedValue?.Clone();
+        target.LocalizedValues = LocalizedValues == null ? null : LocalizedValues.Select(_ => (LocalizedText)_.Clone());
+        target.Values = Values == null ? null : new List<string>(Values);
+
+        return target;
+    }
+
+    public AttributeResponse MapToResponse()
+    {
+        return Apply(new AttributeResponse());
+    }
+
+    public AttributeRequest MapToRequest()
+    {
+        return Apply(new AttributeRequest());
+    }
 }
 
 public class Attribute : IAttribute
@@ -54,7 +81,7 @@ public class Attribute : IAttribute
     public DataType DataType { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public ILocalizedText? LocalizedValue { get; set; }
+    public LocalizedText? LocalizedValue { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public int? Integer { get; set; }
@@ -72,7 +99,7 @@ public class Attribute : IAttribute
     public IEnumerable<string>? Values { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public IEnumerable<ILocalizedText>? LocalizedValues { get; set; }
+    public IEnumerable<LocalizedText>? LocalizedValues { get; set; }
 
     public object Clone()
     {
@@ -90,6 +117,23 @@ public class Attribute : IAttribute
             Value = Value,
             Values = Values == null ? null : new List<string>(Values)
         };
+    }
+
+    public static Attribute Parse(IAttribute source)
+    {
+        IAttribute a = new Attribute();
+        
+        return (Attribute) a.Apply(source);
+    }
+
+    public AttributeResponse MapToResponse()
+    {
+        return ((IAttribute)this).MapToResponse();
+    }
+
+    public AttributeRequest MapToRequest()
+    {
+        return ((IAttribute)this).MapToRequest();
     }
 }
 

@@ -1,43 +1,18 @@
-﻿using System.Text.Json.Serialization;
-
-namespace TillBuddy.Models;
+﻿namespace TillBuddy.Models;
 
 public class LocalizedAssetDetails : ICloneable
 {
-    [JsonPropertyName("assetId")]
     public string AssetId { get; set; } = null!;
-    
-    [JsonPropertyName("name")]
     public LocalizedText Name { get; set; } = null!;
-
-    [JsonPropertyName("description")] 
     public LocalizedText Description { get; set; } = null!;
-
-    [JsonPropertyName("url")]
     public LocalizedText Url { get; set; } = null!;
-
-    [JsonPropertyName("altText")]
     public LocalizedText AltText { get; set; } = null!;
-
-    [JsonPropertyName("assetType")]
     public string AssetType { get; set; } = null!;
-
-    [JsonPropertyName("purpose")]
     public string Purpose { get; set; } = null!;
-
-    [JsonPropertyName("filename")]
     public LocalizedText Filename { get; set; } = null!;
-
-    [JsonPropertyName("contentType")]
     public string ContentType { get; set; } = null!;
-
-    [JsonPropertyName("fileSize")]
     public LocalizedText FileSize { get; set; } = null!;
-
-    [JsonPropertyName("attributes")]
     public Dictionary<string, Attribute> Attributes { get; set; } = null!;
-
-    [JsonPropertyName("tags")]
     public List<string> Tags { get; set; } = null!;
 
     public object Clone()

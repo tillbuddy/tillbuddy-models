@@ -1,41 +1,27 @@
-﻿using System.Text.Json.Serialization;
-
-namespace TillBuddy.Models;
+﻿namespace TillBuddy.Models;
 
 public interface ILocalizedAssetReference : ICloneable
 {
-    [JsonPropertyName("group")]
     public string Group { get; set; }
 
     /// <summary>
     /// An asset can point to an asset or an external url
     /// </summary>
-    [JsonPropertyName("assetId")]
     public Guid? AssetId { get; set; }
-
-    [JsonPropertyName("text")]
-    public ILocalizedText Text { get; set; }
-
-    [JsonPropertyName("url")]
-    public ILocalizedText Url { get; set; }
+    public LocalizedText Text { get; set; }
+    public LocalizedText Url { get; set; }
 }
 
 public class LocalizedAssetReference : ILocalizedAssetReference
 {
-    [JsonPropertyName("group")]
     public string Group { get; set; } = string.Empty;
 
     /// <summary>
     /// An asset can point to an asset or an external url
     /// </summary>
-    [JsonPropertyName("assetId")]
     public Guid? AssetId { get; set; }
-
-    [JsonPropertyName("text")]
-    public ILocalizedText Text { get; set; } = null!;
-
-    [JsonPropertyName("url")]
-    public ILocalizedText Url { get; set; } = null!;
+    public LocalizedText Text { get; set; } = null!;
+    public LocalizedText Url { get; set; } = null!;
 
     public object Clone()
     {
@@ -48,6 +34,17 @@ public class LocalizedAssetReference : ILocalizedAssetReference
         };
 
         return clone;
+    }
+
+    public static LocalizedAssetReference Parse(ILocalizedAssetReference source)
+    {
+        return new()
+        {
+            AssetId = source.AssetId,
+            Group = source.Group,
+            Text = (LocalizedText) source.Text.Clone(),
+            Url = (LocalizedText) source.Url.Clone()
+        };
     }
 }
 

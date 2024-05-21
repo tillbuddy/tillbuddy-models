@@ -1,39 +1,68 @@
-﻿using System.Text.Json.Serialization;
-
-namespace TillBuddy.Models;
+﻿namespace TillBuddy.Models;
 
 public interface IAssetReference
 {
-    [JsonPropertyName("group")]
     public string Group { get; set; }
     /// <summary>
     /// An asset can point to an asset or an external url
     /// </summary>
-    [JsonPropertyName("assetId")]
     public Guid? AssetId { get; set; }
 
-    [JsonPropertyName("text")]
     public string Text { get; set; }
 
-    [JsonPropertyName("url")]
     public string Url { get; set; }
+
+    public AssetReferenceResponse MapToResponse()
+    {
+        return new()
+        {
+            AssetId = AssetId,
+            Text = Text,
+            Url = Url,
+        };
+    }
+    public AssetReferenceRequest MapToRequest()
+    {
+        return new()
+        {
+            AssetId = AssetId,
+            Text = Text,
+            Url = Url,
+        };
+    }
 }
 
 public class AssetReference : IAssetReference
 {
-    [JsonPropertyName("group")]
     public string Group { get; set; } = string.Empty;
     /// <summary>
     /// An asset can point to an asset or an external url
     /// </summary>
-    [JsonPropertyName("assetId")]
     public Guid? AssetId { get; set; }
 
-    [JsonPropertyName("text")]
     public string Text { get; set; } = null!;
 
-    [JsonPropertyName("url")]
     public string Url { get; set; } = null!;
+
+    public AssetReference Parse(IAssetReference source)
+    {
+        return new()
+        {
+            AssetId = source.AssetId,
+            Text = source.Text,
+            Url = source.Url,
+        };
+    }
+
+    public AssetReferenceResponse MapToResponse()
+    {
+        return ((IAssetReference)this).MapToResponse();
+    }
+
+    public AssetReferenceRequest MapToRequest()
+    {
+        return ((IAssetReference)this).MapToRequest();
+    }
 }
 
 public class AssetReferenceRequest : AssetReference

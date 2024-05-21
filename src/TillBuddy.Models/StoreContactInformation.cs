@@ -2,25 +2,26 @@
 
 public interface IStoreContactInformation
 {
-    public IAddress PhysicalAddress { get; set; }
-    public IAddress ContactAddress { get; set; }
+    public Address PhysicalAddress { get; set; }
+    public Address ContactAddress { get; set; }
     public string Phone { get; set; }
     public string Email { get; set; }
 }
 
 public class StoreContactInformation : ValueObject, IStoreContactInformation
 {    
-    public IAddress PhysicalAddress { get; set; } = null!;
-    public IAddress ContactAddress { get; set; } = null!;
+    public Address PhysicalAddress { get; set; } = null!;
+    public Address ContactAddress { get; set; } = null!;
     public string Phone { get; set; } = null!;
     public string Email { get; set; } = null!;
 
     public StoreContactInformation() { }
 
-    public StoreContactInformation(IAddress physicalAddress,
-                                   IAddress contactAddress,
-                                   string phone,
-                                   string email)
+    public StoreContactInformation(
+        Address physicalAddress,
+        Address contactAddress,
+        string phone,
+        string email)
     {
         PhysicalAddress = physicalAddress;
         ContactAddress = contactAddress;
@@ -40,13 +41,13 @@ public class StoreContactInformation : ValueObject, IStoreContactInformation
 public class StoreContactInformationRequest : StoreContactInformation
 {
     public StoreContactInformationRequest() { }
-    public StoreContactInformationRequest(IAddress physicalAddress, IAddress contactAddress, string phone, string email) : base(physicalAddress, contactAddress, phone, email) { }
+    public StoreContactInformationRequest(Address physicalAddress, Address contactAddress, string phone, string email) : base(physicalAddress, contactAddress, phone, email) { }
 }
 
 public class StoreContactInformationResponse : StoreContactInformation
 {
     public StoreContactInformationResponse() { }
-    public StoreContactInformationResponse(IAddress physicalAddress, IAddress contactAddress, string phone, string email) : base(physicalAddress, contactAddress, phone, email) { }
+    public StoreContactInformationResponse(Address physicalAddress, Address contactAddress, string phone, string email) : base(physicalAddress, contactAddress, phone, email) { }
 }
 
 public static class StoreContactInformationMapper

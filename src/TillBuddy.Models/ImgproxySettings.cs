@@ -1,4 +1,6 @@
-﻿namespace TillBuddy.Models;
+﻿using System.Text.Json.Serialization;
+
+namespace TillBuddy.Models;
 
 public interface IImgproxySettings
 {
@@ -7,7 +9,7 @@ public interface IImgproxySettings
     string? DefaultFormat { get; }
     int? DefaultQuality { get; }
     string BaseUrl { get; }
-    IDictionary<string, IImageProperties> Presets { get; }
+    Dictionary<string, ImageProperties> Presets { get; }
 }
 
 public class ImgproxySettings : IImgproxySettings
@@ -17,7 +19,7 @@ public class ImgproxySettings : IImgproxySettings
     public string? DefaultFormat { get; set; } = null!;
     public int? DefaultQuality { get; set; }
     public string BaseUrl { get; set; } = null!;
-    public IDictionary<string, IImageProperties> Presets { get; set; } = new Dictionary<string, IImageProperties>();
+    public Dictionary<string, ImageProperties> Presets { get; set; } = new ();
 }
 
 public class ImgproxySettingsRequest : ImgproxySettings

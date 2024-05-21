@@ -1,4 +1,5 @@
-﻿#nullable enable
+﻿using System.Text.Json.Serialization;
+
 namespace TillBuddy.Models;
 
 public interface IAddress
@@ -7,8 +8,33 @@ public interface IAddress
     public string City { get; set; }
     public string PostalCode { get; set; }
     public string Country { get; set; }
-    public ICoordinates? Location { get; set; }
+    public Coordinates? Location { get; set; }
     public string? Coordinates { get; set; }
+
+    public AddressResponse MapToResponse()
+    {
+        return new()
+        {
+            AddressLine = AddressLine,
+            City = City,
+            PostalCode = PostalCode,
+            Country = Country,
+            Location = Location?.MapToResponse(),
+            Coordinates = Coordinates
+        };
+    }
+    public AddressRequest MapToRequest()
+    {
+        return new()
+        {
+            AddressLine = AddressLine,
+            City = City,
+            PostalCode = PostalCode,
+            Country = Country,
+            Location = Location?.MapToResponse(),
+            Coordinates = Coordinates
+        };
+    }
 }
 
 public class Address : IAddress
@@ -17,12 +43,11 @@ public class Address : IAddress
     public string City { get; set; } = null!;
     public string PostalCode { get; set; } = null!;
     public string Country { get; set; } = null!;
-    public ICoordinates? Location { get; set; }
+    public Coordinates? Location { get; set; }
     public string? Coordinates { get; set; }
 
     public Address()
     {
-
     }
 
     public Address(
@@ -41,6 +66,15 @@ public class Address : IAddress
         Location = location;
     }
 
+    public AddressResponse MapToResponse()
+    {
+        return ((IAddress)this).MapToResponse();
+    }
+
+    public AddressRequest MapToRequest()
+    {
+        return ((IAddress)this).MapToRequest();
+    }
 }
 
 public class AddressRequest : Address
@@ -55,37 +89,4 @@ public class AddressResponse : Address
     public AddressResponse() { }
     
     public AddressResponse(string addressLine, string city, string postalCode, string country, string? coordinates = null, Coordinates? location = null) : base(addressLine, city, postalCode, country, coordinates, location) { }
-}
-
-public static class AddressMapper
-{
-    public static AddressResponse MapToResponse(this IAddress source)
-    {
-        if (source == null) throw new ArgumentNullException(nameof(source));
-
-        return new()
-        {
-            AddressLine = source.AddressLine,
-            City = source.City,
-            PostalCode = source.PostalCode,
-            Country = source.Country,
-            Location = source.Location?.MapToResponse(),
-            Coordinates = source.Coordinates
-        };
-    }
-
-    public static AddressRequest MapToRequest(this IAddress source)
-    {
-        if (source == null) throw new ArgumentNullException(nameof(source));
-
-        return new()
-        {
-            AddressLine = source.AddressLine,
-            City = source.City,
-            PostalCode = source.PostalCode,
-            Country = source.Country,
-            Location = source.Location?.MapToResponse(),
-            Coordinates = source.Coordinates
-        };
-    }
 }

@@ -1,12 +1,31 @@
-﻿using System.Globalization;
+﻿using System.Diagnostics.Metrics;
+using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace TillBuddy.Models;
 
-public interface IMoney
+public interface IMoney : ICloneable
 {
     public decimal Amount { get; set; }
     public string Currency { get; set; }
+
+
+    public MoneyResponse MapToResponse()
+    {
+        return new()
+        {
+            Amount = Amount,
+            Currency = Currency
+        };
+    }
+    public MoneyRequest MapToRequest()
+    {
+        return new()
+        {
+            Amount = Amount,
+            Currency = Currency
+        };
+    }
 }
 
 public class Money : ValueObject, IMoney
@@ -60,8 +79,6 @@ public class Money : ValueObject, IMoney
 
     public Money(decimal amount, Currency currency)
     {
-        if(currency == null) throw new ArgumentNullException(nameof(currency));
-
         Amount = amount;
         Currency = currency;
     }
@@ -134,10 +151,25 @@ public class Money : ValueObject, IMoney
         return this;
     }
 
+    public MoneyResponse MapToResponse()
+    {
+        return ((IMoney)this).MapToResponse();
+    }
+
+    public MoneyRequest MapToRequest()
+    {
+        return ((IMoney)this).MapToRequest();
+    }
+
     protected override IEnumerable<object> GetEqualityComponents()
     {
         yield return Amount;
         yield return Currency;
+    }
+
+    public object Clone()
+    {
+        return new Money(Amount, Currency);
     }
 }
 

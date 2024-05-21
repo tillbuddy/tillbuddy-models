@@ -2,31 +2,31 @@
 
 public interface ISyncStatus
 {
-    public IEnumerable<ISyncStatusSuccess> Success { get; }
-    public IEnumerable<ISyncStatusFail> Fail { get; }
+    public IEnumerable<SyncStatusSuccess> Success { get; }
+    public IEnumerable<SyncStatusFail> Fail { get; }
 }
 
 public class SyncStatus : ISyncStatus
 {
-    protected List<ISyncStatusSuccess> _success { get; set; } = new();
-    protected List<ISyncStatusFail> _fail { get; set; } = new();
+    protected List<SyncStatusSuccess> _success { get; set; } = new();
+    protected List<SyncStatusFail> _fail { get; set; } = new();
     
-    public IEnumerable<ISyncStatusSuccess> Success
+    public IEnumerable<SyncStatusSuccess> Success
     {
         get { return _success; }
     }
 
-    public IEnumerable<ISyncStatusFail> Fail
+    public IEnumerable<SyncStatusFail> Fail
     {
         get { return _fail; }
     }
 
-    public void Add(ISyncStatusSuccess success)
+    public void Add(SyncStatusSuccess success)
     {
         _success.Add(success);
     }
 
-    public void Add(ISyncStatusFail fail)
+    public void Add(SyncStatusFail fail)
     {
         _fail.Add(fail);
     }

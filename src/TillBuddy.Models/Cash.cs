@@ -1,18 +1,36 @@
 ﻿
 namespace TillBuddy.Models;
 
-public interface ICash
+public interface ICash : ICloneable
 {
     public string UserId { get; set; }
-    public IMoney Amount { get; set; }
+    public Money Amount { get; set; }
     public DateTime RegisteredAt { get; set; }
 
+    public T Apply<T>(T target) where T : ICash
+    {
+        target.UserId = UserId;
+        target.Amount = (Money) Amount.Clone();
+        target.RegisteredAt = RegisteredAt;
+
+        return target;
+    }
+
+    public CashResponse MapToResponse()
+    {
+        return Apply(new CashResponse());
+    }
+
+    public CashRequest MapToRequest()
+    {
+        return Apply(new CashRequest());
+    }
 }
 
 public class Cash : ValueObject, ICash
 {
     public string UserId { get; set; } = null!;
-    public IMoney Amount { get; set; } = null!;
+    public Money Amount { get; set; } = null!;
     public DateTime RegisteredAt { get; set; }
 
     public Cash() { }
@@ -32,7 +50,7 @@ public class Cash : ValueObject, ICash
 
     public Cash(
         Guid userId,
-        IMoney amount,
+        Money amount,
         DateTime registeredAt)
     {
         if (userId == Guid.Empty) throw new ArgumentNullException(nameof(userId));
@@ -50,12 +68,42 @@ public class Cash : ValueObject, ICash
         yield return Amount.Currency;
         yield return RegisteredAt;
     }
+
+    public Cash Parse(ICash source)
+    {
+        return new()
+        {
+            UserId = source.UserId,
+            Amount = source.Amount,
+            RegisteredAt = source.RegisteredAt
+        };
+    }
+
+    public CashResponse MapToResponse()
+    {
+        return ((ICash)this).MapToResponse();
+    }
+
+    public CashRequest MapToRequest()
+    {
+        return ((ICash)this).MapToRequest();
+    }
+
+    public object Clone()
+    {
+        return new Cash
+        {
+            Amount = Amount,
+            RegisteredAt = RegisteredAt,
+            UserId = UserId
+        };
+    }
 }
 
 public class CashRequest : Cash
 {
 }
 
-public class CashRsponse : Cash
+public class CashResponse : Cash
 {
 }

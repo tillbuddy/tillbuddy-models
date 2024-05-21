@@ -9,13 +9,13 @@ public interface ILocalizedAttribute
     public string Value { get; set; }
 
     public DataType DataType { get; set; }
-    public ILocalizedText? LocalizedValue { get; set; }
+    public LocalizedText? LocalizedValue { get; set; }
     public int? Integer { get; set; }
     public decimal? Decimal { get; set; }
     public bool? Bool { get; set; }
     public DateTime? DateTime { get; set; }
     public IEnumerable<string>? Values { get; set; }
-    public IEnumerable<ILocalizedText>? LocalizedValues { get; set; }
+    public IEnumerable<LocalizedText>? LocalizedValues { get; set; }
 }
 
 public class LocalizedAttribute : IAttribute
@@ -23,12 +23,11 @@ public class LocalizedAttribute : IAttribute
     public string AttributeId { get; set; } = null!;
     public string DisplayName { get; set; } = null!;
     public string Value { get; set; } = null!;
-
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public DataType DataType { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public ILocalizedText? LocalizedValue { get; set; }
+    public LocalizedText? LocalizedValue { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public int? Integer { get; set; }
@@ -46,7 +45,7 @@ public class LocalizedAttribute : IAttribute
     public IEnumerable<string>? Values { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public IEnumerable<ILocalizedText>? LocalizedValues { get; set; }
+    public IEnumerable<LocalizedText>? LocalizedValues { get; set; }
 
     public object Clone()
     {
@@ -59,22 +58,22 @@ public class LocalizedAttribute : IAttribute
             Decimal = Decimal,
             DisplayName = DisplayName,
             Integer = Integer,
-            LocalizedValue = (ILocalizedText?) LocalizedValue?.Clone(),
+            LocalizedValue = (LocalizedText?) LocalizedValue?.Clone(),
             LocalizedValues = Clone(LocalizedValues),
             Value = Value,
             Values = Values?.ToList()
         };
     }
 
-    private static List<ILocalizedText>? Clone(IEnumerable<ILocalizedText>? localizedTexts)
+    private static List<LocalizedText>? Clone(IEnumerable<ILocalizedText>? localizedTexts)
     {
         if (localizedTexts == null) return null;
 
-        var result = new List<ILocalizedText>();
+        var result = new List<LocalizedText>();
 
         foreach (var localizedText in localizedTexts)
         {
-            result.Add((ILocalizedText) localizedText.Clone());
+            result.Add((LocalizedText) localizedText.Clone());
         }
 
         return result;

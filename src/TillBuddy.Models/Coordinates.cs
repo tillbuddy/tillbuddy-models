@@ -36,7 +36,7 @@ public class Coordinates : ValueObject, ICoordinates
     /// </summary>
     public static bool TryParse(string value, out Coordinates coordinates)
     {
-        coordinates = null;
+        coordinates = new Coordinates();
 
         if (value == null) return false;
 

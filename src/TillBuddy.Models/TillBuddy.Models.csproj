@@ -7,4 +7,8 @@
     <RepositoryUrl>URL</RepositoryUrl>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Converters\" />
+  </ItemGroup>
+
 </Project>
