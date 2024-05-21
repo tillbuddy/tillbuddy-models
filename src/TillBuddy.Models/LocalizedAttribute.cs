@@ -47,6 +47,38 @@ public class LocalizedAttribute : IAttribute
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public IEnumerable<ILocalizedText>? LocalizedValues { get; set; }
+
+    public object Clone()
+    {
+        return new LocalizedAttribute()
+        {
+            AttributeId = AttributeId,
+            Bool = Bool,
+            DataType = DataType,
+            DateTime = DateTime,
+            Decimal = Decimal,
+            DisplayName = DisplayName,
+            Integer = Integer,
+            LocalizedValue = (ILocalizedText?) LocalizedValue?.Clone(),
+            LocalizedValues = Clone(LocalizedValues),
+            Value = Value,
+            Values = Values?.ToList()
+        };
+    }
+
+    private static List<ILocalizedText>? Clone(IEnumerable<ILocalizedText>? localizedTexts)
+    {
+        if (localizedTexts == null) return null;
+
+        var result = new List<ILocalizedText>();
+
+        foreach (var localizedText in localizedTexts)
+        {
+            result.Add((ILocalizedText) localizedText.Clone());
+        }
+
+        return result;
+    }
 }
 
 public class LocalizedAttributeRequest : LocalizedAttribute
