@@ -1,8 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿namespace TillBuddy.Models;
 
-namespace TillBuddy.Models;
-
-public interface IAddress
+public interface IAddress : ICloneable
 {
     public string AddressLine { get; set; }
     public string City { get; set; }
@@ -74,6 +72,19 @@ public class Address : IAddress
     public AddressRequest MapToRequest()
     {
         return ((IAddress)this).MapToRequest();
+    }
+
+    public object Clone()
+    {
+        return new Address
+        {
+            AddressLine = AddressLine,
+            City = City,
+            PostalCode = PostalCode,
+            Country = Country,
+            Coordinates = Coordinates,
+            Location = Location != null ? null : (Coordinates?) Location.Clone()
+        };
     }
 }
 

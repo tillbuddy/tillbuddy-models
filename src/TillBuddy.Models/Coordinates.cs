@@ -2,7 +2,7 @@
 
 namespace TillBuddy.Models;
 
-public interface ICoordinates
+public interface ICoordinates : ICloneable
 {
     public double Latitude { get; set; }
     public double Longitude { get; set; }
@@ -121,6 +121,29 @@ public class Coordinates : ValueObject, ICoordinates
     {
         return string.Format("{0},{1}", Latitude.ToString("G", CultureInfo.InvariantCulture), Longitude.ToString("G", CultureInfo.InvariantCulture));
     }
+
+    public object Clone()
+    {
+        return new Coordinates(Latitude, Longitude);
+    }
+
+    public CoordinatesResponse MapToResponse()
+    {
+        return new()
+        {
+            Latitude = Latitude,
+            Longitude = Longitude
+        };
+    }
+
+    public CoordinatesRequest MapToRequest()
+    {
+        return new()
+        {
+            Latitude = Latitude,
+            Longitude = Longitude
+        };
+    }
 }
 
 public class CoordinatesRequest : Coordinates
@@ -129,29 +152,4 @@ public class CoordinatesRequest : Coordinates
 
 public class CoordinatesResponse : Coordinates
 {
-}
-
-public static class CoordinatesMapper
-{
-    public static CoordinatesResponse MapToResponse(this ICoordinates source)
-    {
-        if (source == null) throw new ArgumentNullException(nameof(source));
-
-        return new()
-        {
-            Latitude = source.Latitude,
-            Longitude = source.Longitude
-        };
-    }
-
-    public static CoordinatesRequest MapToRequest(this ICoordinates source)
-    {
-        if (source == null) throw new ArgumentNullException(nameof(source));
-
-        return new()
-        {
-            Latitude = source.Latitude,
-            Longitude = source.Longitude
-        };
-    }
 }

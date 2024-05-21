@@ -6,6 +6,28 @@ public interface IStoreContactInformation
     public Address ContactAddress { get; set; }
     public string Phone { get; set; }
     public string Email { get; set; }
+
+    public StoreContactInformationResponse MapToResponse()
+    {
+        return new()
+        {
+            PhysicalAddress = PhysicalAddress.MapToResponse(),
+            ContactAddress = ContactAddress.MapToResponse(),
+            Phone = Phone,
+            Email = Email
+        };
+    }
+
+    public StoreContactInformationRequest MapToRequest()
+    {
+        return new()
+        {
+            PhysicalAddress = PhysicalAddress.MapToRequest(),
+            ContactAddress = ContactAddress.MapToResponse(),
+            Phone = Phone,
+            Email = Email
+        };
+    }
 }
 
 public class StoreContactInformation : ValueObject, IStoreContactInformation
@@ -36,6 +58,27 @@ public class StoreContactInformation : ValueObject, IStoreContactInformation
         yield return Phone;
         yield return Email;
     }
+
+    public StoreContactInformationResponse MapToResponse()
+    {
+        return ((IStoreContactInformation)this).MapToResponse();
+    }
+
+    public StoreContactInformationRequest MapToRequest()
+    {
+        return ((IStoreContactInformation)this).MapToRequest();
+    }
+
+    public StoreContactInformationRequest Parse(IStoreContactInformation source)
+    {
+        return new()
+        {
+            PhysicalAddress = (Address)source.PhysicalAddress.Clone(),
+            ContactAddress = (Address)source.ContactAddress.Clone(),
+            Phone = source.Phone,
+            Email = source.Email
+        };
+    }
 }
 
 public class StoreContactInformationRequest : StoreContactInformation
@@ -48,33 +91,4 @@ public class StoreContactInformationResponse : StoreContactInformation
 {
     public StoreContactInformationResponse() { }
     public StoreContactInformationResponse(Address physicalAddress, Address contactAddress, string phone, string email) : base(physicalAddress, contactAddress, phone, email) { }
-}
-
-public static class StoreContactInformationMapper
-{
-    public static StoreContactInformationResponse MapToResponse(this IStoreContactInformation source)
-    {
-        if (source == null) throw new ArgumentNullException(nameof(source));
-
-        return new()
-        {
-            PhysicalAddress = source.PhysicalAddress.MapToResponse(),
-            ContactAddress = source.ContactAddress.MapToResponse(),
-            Phone = source.Phone,
-            Email = source.Email
-        };
-    }
-
-    public static StoreContactInformationRequest MapToRequest(this IStoreContactInformation source)
-    {
-        if (source == null) throw new ArgumentNullException(nameof(source));
-
-        return new()
-        {
-            PhysicalAddress = source.PhysicalAddress.MapToRequest(),
-            ContactAddress = source.ContactAddress.MapToResponse(),
-            Phone = source.Phone,
-            Email = source.Email
-        };
-    }
 }

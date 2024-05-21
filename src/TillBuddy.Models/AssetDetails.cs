@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace TillBuddy.Models;
+﻿namespace TillBuddy.Models;
 
 public interface IAssetDetails
 {
@@ -69,8 +67,6 @@ public class AssetDetails : IAssetDetails
     public string FileSize { get; set; } = null!;
     public IDictionary<string, string> Attributes { get; set; } = null!;
     public IEnumerable<string> Tags { get; set; } = null!;
-
-
     public AssetDetailsResponse MapToResponse()
     {
         return ((IAssetDetails)this).MapToResponse();
