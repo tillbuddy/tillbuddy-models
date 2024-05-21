@@ -13,44 +13,7 @@ public interface IAssetDetails
     public string ContentType { get; set; }
     public string FileSize { get; set; }
     public IDictionary<string, string> Attributes { get; set; }
-    public IEnumerable<string> Tags { get; set; }
-
-    public AssetDetailsResponse MapToResponse()
-    {
-        return new()
-        {
-            AltText = AltText,
-            AssetType = AssetType,
-            AssetId = AssetId,
-            Attributes = Attributes.Clone(),
-            ContentType = ContentType,
-            Description = Description,
-            Filename = Filename,
-            FileSize = FileSize,
-            Name = Name,
-            Purpose = Purpose,
-            Tags = Tags.ToList(),
-            Url = Url
-        };
-    }
-    public AssetDetailsRequest MapToRequest()
-    {
-        return new()
-        {
-            AltText = AltText,
-            AssetType = AssetType,
-            AssetId = AssetId,
-            Attributes = Attributes.Clone(),
-            ContentType = ContentType,
-            Description = Description,
-            Filename = Filename,
-            FileSize = FileSize,
-            Name = Name,
-            Purpose = Purpose,
-            Tags = Tags.ToList(),
-            Url = Url
-        };
-    }
+    public IEnumerable<string> Tags { get; set; }    
 }
 
 public class AssetDetails : IAssetDetails
@@ -67,14 +30,42 @@ public class AssetDetails : IAssetDetails
     public string FileSize { get; set; } = null!;
     public IDictionary<string, string> Attributes { get; set; } = null!;
     public IEnumerable<string> Tags { get; set; } = null!;
+
     public AssetDetailsResponse MapToResponse()
     {
-        return ((IAssetDetails)this).MapToResponse();
+        return new()
+        {
+            AltText = AltText,
+            AssetType = AssetType,
+            AssetId = AssetId,
+            Attributes = Attributes.Clone(),
+            ContentType = ContentType,
+            Description = Description,
+            Filename = Filename,
+            FileSize = FileSize,
+            Name = Name,
+            Purpose = Purpose,
+            Tags = Tags.ToList(),
+            Url = Url
+        };
     }
-
     public AssetDetailsRequest MapToRequest()
     {
-        return ((IAssetDetails)this).MapToRequest();
+        return new()
+        {
+            AltText = AltText,
+            AssetType = AssetType,
+            AssetId = AssetId,
+            Attributes = Attributes.Clone(),
+            ContentType = ContentType,
+            Description = Description,
+            Filename = Filename,
+            FileSize = FileSize,
+            Name = Name,
+            Purpose = Purpose,
+            Tags = Tags.ToList(),
+            Url = Url
+        };
     }
 }
 

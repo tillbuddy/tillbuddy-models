@@ -1,4 +1,7 @@
-﻿namespace TillBuddy.Models;
+﻿using System.Net.NetworkInformation;
+using System.Numerics;
+
+namespace TillBuddy.Models;
 
 public interface ILocalizedText : ICloneable
 {
@@ -95,18 +98,32 @@ public class LocalizedText : ILocalizedText
 
     public object Clone()
     {
-        var clone = new LocalizedText
+        return new LocalizedText()
         {
             Text = Text,
-            UseTranslation = UseTranslation
+            UseTranslation = UseTranslation,
+            Translations = CloneDictionary(Translations)
         };
+    }
 
-        if (Translations != null)
+    public LocalizedTextResponse MapToResponse()
+    {
+        return new()
         {
-            clone.Translations = CloneDictionary(Translations);
-        }
+            Text = Text,
+            UseTranslation = UseTranslation,
+            Translations = CloneDictionary(Translations)
+        };
+    }
 
-        return clone;
+    public LocalizedTextRequest MapToRequest()
+    {
+        return new()
+        {
+            Text = Text,
+            UseTranslation = UseTranslation,
+            Translations = CloneDictionary(Translations)
+        };
     }
 }
 

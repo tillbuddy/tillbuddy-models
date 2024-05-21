@@ -18,32 +18,6 @@ public interface IAttribute : ICloneable
     [JsonConverter(typeof(List<LocalizedText>))]
     public IEnumerable<LocalizedText>? LocalizedValues { get; set; }
 
-    public T Apply<T>(T target) where T : IAttribute
-    {
-        target.AttributeId = AttributeId;
-        target.DisplayName = DisplayName;
-        target.Value = Value;
-        target.DataType = DataType;
-        target.Integer = Integer;
-        target.Decimal = Decimal;
-        target.Bool = Bool;
-        target.DateTime = DateTime;
-        target.LocalizedValue = (LocalizedText?)LocalizedValue?.Clone();
-        target.LocalizedValues = LocalizedValues == null ? null : LocalizedValues.Select(_ => (LocalizedText)_.Clone());
-        target.Values = Values == null ? null : new List<string>(Values);
-
-        return target;
-    }
-
-    public AttributeResponse MapToResponse()
-    {
-        return Apply(new AttributeResponse());
-    }
-
-    public AttributeRequest MapToRequest()
-    {
-        return Apply(new AttributeRequest());
-    }
 }
 
 public class Attribute : IAttribute
@@ -121,19 +95,36 @@ public class Attribute : IAttribute
 
     public static Attribute Parse(IAttribute source)
     {
-        IAttribute a = new Attribute();
+        var a = new Attribute();
         
         return (Attribute) a.Apply(source);
     }
 
+    public T Apply<T>(T target) where T : IAttribute
+    {
+        target.AttributeId = AttributeId;
+        target.DisplayName = DisplayName;
+        target.Value = Value;
+        target.DataType = DataType;
+        target.Integer = Integer;
+        target.Decimal = Decimal;
+        target.Bool = Bool;
+        target.DateTime = DateTime;
+        target.LocalizedValue = (LocalizedText?)LocalizedValue?.Clone();
+        target.LocalizedValues = LocalizedValues == null ? null : LocalizedValues.Select(_ => (LocalizedText)_.Clone());
+        target.Values = Values == null ? null : new List<string>(Values);
+
+        return target;
+    }
+
     public AttributeResponse MapToResponse()
     {
-        return ((IAttribute)this).MapToResponse();
+        return Apply(new AttributeResponse());
     }
 
     public AttributeRequest MapToRequest()
     {
-        return ((IAttribute)this).MapToRequest();
+        return Apply(new AttributeRequest());
     }
 }
 

@@ -1,4 +1,6 @@
-﻿namespace TillBuddy.Models;
+﻿using System.Diagnostics.Metrics;
+
+namespace TillBuddy.Models;
 
 
 public interface IImageProperties
@@ -17,6 +19,42 @@ public class ImageProperties : IImageProperties
     public string? ResizingType { get; set; }
     public Padding? Padding { get; set; }
     public string? BackgroundColor { get; set; }
+
+    public ImagePropertiesRequest MapToRequest()
+    {
+        return new()
+        {
+            BackgroundColor = BackgroundColor,
+            Height = Height,
+            Padding = Padding?.MapToRequest(),
+            ResizingType = ResizingType,
+            Width = Width
+        };
+    }
+
+    public ImagePropertiesResponse MapToResponse()
+    {
+        return new()
+        {
+            BackgroundColor = BackgroundColor,
+            Height = Height,
+            Padding = Padding?.MapToResponse(),
+            ResizingType = ResizingType,
+            Width = Width
+        };
+    }
+
+    public object Clone()
+    {
+        return new ImageProperties
+        {
+            BackgroundColor = BackgroundColor,
+            Height = Height,
+            Padding = Padding?.MapToRequest(),
+            ResizingType = ResizingType,
+            Width = Width
+        };
+    }
 }
 
 public class ImagePropertiesRequest : ImageProperties

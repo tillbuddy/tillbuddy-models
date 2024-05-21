@@ -6,25 +6,6 @@ public interface ICash : ICloneable
     public string UserId { get; set; }
     public Money Amount { get; set; }
     public DateTime RegisteredAt { get; set; }
-
-    public T Apply<T>(T target) where T : ICash
-    {
-        target.UserId = UserId;
-        target.Amount = (Money) Amount.Clone();
-        target.RegisteredAt = RegisteredAt;
-
-        return target;
-    }
-
-    public CashResponse MapToResponse()
-    {
-        return Apply(new CashResponse());
-    }
-
-    public CashRequest MapToRequest()
-    {
-        return Apply(new CashRequest());
-    }
 }
 
 public class Cash : ValueObject, ICash
@@ -79,14 +60,23 @@ public class Cash : ValueObject, ICash
         };
     }
 
+    private T Apply<T>(T target) where T : ICash
+    {
+        target.UserId = UserId;
+        target.Amount = (Money)Amount.Clone();
+        target.RegisteredAt = RegisteredAt;
+
+        return target;
+    }
+
     public CashResponse MapToResponse()
     {
-        return ((ICash)this).MapToResponse();
+        return Apply(new CashResponse());
     }
 
     public CashRequest MapToRequest()
     {
-        return ((ICash)this).MapToRequest();
+        return Apply(new CashRequest());
     }
 
     public object Clone()

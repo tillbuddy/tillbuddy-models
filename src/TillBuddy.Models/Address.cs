@@ -7,32 +7,7 @@ public interface IAddress : ICloneable
     public string PostalCode { get; set; }
     public string Country { get; set; }
     public Coordinates? Location { get; set; }
-    public string? Coordinates { get; set; }
-
-    public AddressResponse MapToResponse()
-    {
-        return new()
-        {
-            AddressLine = AddressLine,
-            City = City,
-            PostalCode = PostalCode,
-            Country = Country,
-            Location = Location?.MapToResponse(),
-            Coordinates = Coordinates
-        };
-    }
-    public AddressRequest MapToRequest()
-    {
-        return new()
-        {
-            AddressLine = AddressLine,
-            City = City,
-            PostalCode = PostalCode,
-            Country = Country,
-            Location = Location?.MapToResponse(),
-            Coordinates = Coordinates
-        };
-    }
+    public string? Coordinates { get; set; }   
 }
 
 public class Address : IAddress
@@ -66,12 +41,27 @@ public class Address : IAddress
 
     public AddressResponse MapToResponse()
     {
-        return ((IAddress)this).MapToResponse();
+        return new()
+        {
+            AddressLine = AddressLine,
+            City = City,
+            PostalCode = PostalCode,
+            Country = Country,
+            Location = Location?.MapToResponse(),
+            Coordinates = Coordinates
+        };
     }
-
     public AddressRequest MapToRequest()
     {
-        return ((IAddress)this).MapToRequest();
+        return new()
+        {
+            AddressLine = AddressLine,
+            City = City,
+            PostalCode = PostalCode,
+            Country = Country,
+            Location = Location?.MapToResponse(),
+            Coordinates = Coordinates
+        };
     }
 
     public object Clone()

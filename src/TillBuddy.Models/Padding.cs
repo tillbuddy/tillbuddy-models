@@ -1,6 +1,6 @@
 ﻿namespace TillBuddy.Models;
 
-public interface IPadding
+public interface IPadding : ICloneable
 {
     int Top { get; }
     int Right { get; }
@@ -15,7 +15,41 @@ public class Padding : IPadding
     public int Bottom { get; set; }
     public int Left { get; set; }
 
+    public object Clone()
+    {
+        return new Padding
+        {
+            Top = Top,
+            Right = Right,
+            Bottom = Bottom,
+            Left = Left
+        };
+    }
+
     public Padding Parse(IPadding source)
+    {
+        return new()
+        {
+            Top = source.Top,
+            Right = source.Right,
+            Bottom = source.Bottom,
+            Left = source.Left
+        };
+    }
+
+
+    public PaddingResponse MapToRequest()
+    {
+        return new()
+        {
+            Top = source.Top,
+            Right = source.Right,
+            Bottom = source.Bottom,
+            Left = source.Left
+        };
+    }
+
+    public PaddingRequest MapToResponse()
     {
         return new()
         {

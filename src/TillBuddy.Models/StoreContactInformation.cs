@@ -5,29 +5,7 @@ public interface IStoreContactInformation
     public Address PhysicalAddress { get; set; }
     public Address ContactAddress { get; set; }
     public string Phone { get; set; }
-    public string Email { get; set; }
-
-    public StoreContactInformationResponse MapToResponse()
-    {
-        return new()
-        {
-            PhysicalAddress = PhysicalAddress.MapToResponse(),
-            ContactAddress = ContactAddress.MapToResponse(),
-            Phone = Phone,
-            Email = Email
-        };
-    }
-
-    public StoreContactInformationRequest MapToRequest()
-    {
-        return new()
-        {
-            PhysicalAddress = PhysicalAddress.MapToRequest(),
-            ContactAddress = ContactAddress.MapToResponse(),
-            Phone = Phone,
-            Email = Email
-        };
-    }
+    public string Email { get; set; }    
 }
 
 public class StoreContactInformation : ValueObject, IStoreContactInformation
@@ -61,12 +39,24 @@ public class StoreContactInformation : ValueObject, IStoreContactInformation
 
     public StoreContactInformationResponse MapToResponse()
     {
-        return ((IStoreContactInformation)this).MapToResponse();
+        return new()
+        {
+            PhysicalAddress = PhysicalAddress.MapToResponse(),
+            ContactAddress = ContactAddress.MapToResponse(),
+            Phone = Phone,
+            Email = Email
+        };
     }
 
     public StoreContactInformationRequest MapToRequest()
     {
-        return ((IStoreContactInformation)this).MapToRequest();
+        return new()
+        {
+            PhysicalAddress = PhysicalAddress.MapToRequest(),
+            ContactAddress = ContactAddress.MapToResponse(),
+            Phone = Phone,
+            Email = Email
+        };
     }
 
     public StoreContactInformationRequest Parse(IStoreContactInformation source)
