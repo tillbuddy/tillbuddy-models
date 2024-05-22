@@ -115,7 +115,6 @@ public class Money : ValueObject, IMoney
         }
     }
 
-
     public static implicit operator string(Money money)
     {
         return money.ToString();
@@ -153,12 +152,20 @@ public class Money : ValueObject, IMoney
 
     public MoneyResponse MapToResponse()
     {
-        return ((IMoney)this).MapToResponse();
+        return new()
+        {
+            Amount = Amount,
+            Currency = Currency,
+        };
     }
 
     public MoneyRequest MapToRequest()
     {
-        return ((IMoney)this).MapToRequest();
+        return new()
+        {
+            Amount = Amount,
+            Currency = Currency,
+        };
     }
 
     protected override IEnumerable<object> GetEqualityComponents()
@@ -167,7 +174,7 @@ public class Money : ValueObject, IMoney
         yield return Currency;
     }
 
-    public object Clone()
+    public virtual object Clone()
     {
         return new Money(Amount, Currency);
     }
@@ -175,40 +182,28 @@ public class Money : ValueObject, IMoney
 
 public class MoneyRequest : Money
 {
+    public MoneyRequest() { }
+
+    public MoneyRequest(decimal amount, Currency currency) : base(amount, currency) { }
+
+    public MoneyRequest(decimal amount, string currency) : base(amount, currency) { }
+
+    public override object Clone()
+    {
+        return new MoneyRequest(Amount, Currency);
+    }
 }
 
 public class MoneyResponse : Money
 {
-}
+    public MoneyResponse() { }
 
-public static class MoneyMapper
-{
-    public static MoneyResponse MapToResponse(this IMoney source)
+    public MoneyResponse(decimal amount, Currency currency) : base(amount, currency) { }
+
+    public MoneyResponse(decimal amount, string currency) : base(amount, currency) { }
+
+    public override object Clone()
     {
-        if (source == null) throw new ArgumentNullException(nameof(source));
-
-        return new()
-        {
-            Amount = source.Amount,
-            Currency = source.Currency,
-        };
-    }
-
-    public static MoneyRequest MapToRequest(this IMoney source)
-    {
-        if (source == null) throw new ArgumentNullException(nameof(source));
-
-        return new()
-        {
-            Amount = source.Amount,
-            Currency = source.Currency,
-        };
-    }
-
-    public static string MapToString(this IMoney source)
-    {
-        if (source == null) throw new ArgumentNullException(nameof(source));
-
-        return new Money(source.Amount, source.Currency).ToString();
+        return new MoneyResponse(Amount, Currency);
     }
 }

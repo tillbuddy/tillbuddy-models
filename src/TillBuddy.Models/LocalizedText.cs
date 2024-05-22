@@ -49,7 +49,7 @@ public class LocalizedText : ILocalizedText
     {
         Text = localizedText.Text;
         UseTranslation = localizedText.UseTranslation;
-        Translations = CloneDictionary(localizedText.Translations);
+        Translations = localizedText.Translations.Clone();
     }
 
     public LocalizedText()
@@ -81,28 +81,13 @@ public class LocalizedText : ILocalizedText
         Translations = new Dictionary<string, string>();
     }
 
-    private Dictionary<string, string> CloneDictionary(IDictionary<string, string> source)
-    {
-        var target = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
-
-        if (source != null)
-        {
-            foreach (var (key, value) in source)
-            {
-                target[key] = value;
-            }
-        }
-
-        return target;
-    }
-
-    public object Clone()
+    public virtual object Clone()
     {
         return new LocalizedText()
         {
             Text = Text,
             UseTranslation = UseTranslation,
-            Translations = CloneDictionary(Translations)
+            Translations = Translations.Clone()
         };
     }
 
@@ -112,7 +97,7 @@ public class LocalizedText : ILocalizedText
         {
             Text = Text,
             UseTranslation = UseTranslation,
-            Translations = CloneDictionary(Translations)
+            Translations = Translations.Clone()
         };
     }
 
@@ -122,7 +107,7 @@ public class LocalizedText : ILocalizedText
         {
             Text = Text,
             UseTranslation = UseTranslation,
-            Translations = CloneDictionary(Translations)
+            Translations = Translations.Clone()
         };
     }
 }
@@ -144,6 +129,16 @@ public class LocalizedTextRequest : LocalizedText
     {
         return new (translations);
     }
+
+    public override object Clone()
+    {
+        return new LocalizedTextRequest()
+        {
+            Text = Text,
+            UseTranslation = UseTranslation,
+            Translations = Translations.Clone()
+        };
+    }
 }
 
 public class LocalizedTextResponse : LocalizedText
@@ -162,5 +157,15 @@ public class LocalizedTextResponse : LocalizedText
     public static implicit operator LocalizedTextResponse(Dictionary<string, string> translations)
     {
         return new (translations);
+    }
+
+    public override object Clone()
+    {
+        return new LocalizedTextResponse()
+        {
+            Text = Text,
+            UseTranslation = UseTranslation,
+            Translations = Translations.Clone()
+        };
     }
 }

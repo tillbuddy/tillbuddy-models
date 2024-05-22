@@ -79,7 +79,7 @@ public class Cash : ValueObject, ICash
         return Apply(new CashRequest());
     }
 
-    public object Clone()
+    public virtual object Clone()
     {
         return new Cash
         {
@@ -92,8 +92,26 @@ public class Cash : ValueObject, ICash
 
 public class CashRequest : Cash
 {
+    public override object Clone()
+    {
+        return new CashRequest
+        {
+            Amount = Amount,
+            RegisteredAt = RegisteredAt,
+            UserId = UserId
+        };
+    }
 }
 
 public class CashResponse : Cash
 {
+    public override object Clone()
+    {
+        return new CashResponse
+        {
+            Amount = Amount,
+            RegisteredAt = RegisteredAt,
+            UserId = UserId
+        };
+    }
 }
