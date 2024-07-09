@@ -190,13 +190,7 @@ public sealed class Money : IEquatable<Money>
 
     public override int GetHashCode()
     {
-        unchecked
-        {
-            int hash = 17;
-            hash = hash * 23 + (Currency != null ? Currency.GetHashCode() : 0);
-            hash = hash * 23 + Amount.GetHashCode();
-            return hash;
-        }
+        return HashCode.Combine(Currency, Amount);
     }
 }
 

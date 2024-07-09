@@ -59,4 +59,14 @@ public sealed class PostalCode : IEquatable<PostalCode>
 
         return true;
     }
+
+    public override bool Equals(object? obj)
+    {
+        return Equals(obj as PostalCode);
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Value);
+    }
 }

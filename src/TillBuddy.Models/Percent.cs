@@ -79,4 +79,14 @@ public sealed class Percent : IEquatable<Percent>
 
         return true;
     }
+
+    public override bool Equals(object? obj)
+    {
+        return Equals(obj as Percent);
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Percentage, Number);
+    }
 }

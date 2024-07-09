@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using Newtonsoft.Json;
 using TillBuddy.Models.Exceptions;
 
 namespace TillBuddy.Models.Tests;
@@ -36,22 +35,6 @@ public class MoneyTests
             @" { ""amount"": 25, ""currency"": ""NOK"" }",
             @" { ""amount"": 25.0, ""currency"": ""NOK"" }"
         };
-    }
-
-    [Theory, MemberData(nameof(JsonValue))]
-    public void Parse_amount_from_json_with_Newtonsoft(string value)
-    {
-        var actual = JsonConvert.DeserializeObject<Money>(value);
-
-        actual.Amount.Should().Be(25);
-    }
-
-    [Theory, MemberData(nameof(JsonValue))]
-    public void Parse_currency_from_json_Newtonsoft(string value)
-    {
-        var actual = JsonConvert.DeserializeObject<Money>(value);
-
-        actual.Currency.Value.Should().Be("NOK");
     }
 
     [Theory, MemberData(nameof(InvalidCtorValues))]

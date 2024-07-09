@@ -1,5 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using TillBuddy.Models.Exceptions;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TillBuddy.Models;
 
@@ -68,11 +69,6 @@ public sealed class MobilePhone : IEquatable<MobilePhone>
 
     public override int GetHashCode()
     {
-        unchecked
-        {
-            int hash = 17;
-            hash = hash * 23 + (Value != null ? Value.GetHashCode() : 0);
-            return hash;
-        }
+        return HashCode.Combine(Value);
     }
 }

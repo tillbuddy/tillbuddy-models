@@ -72,13 +72,7 @@ public sealed class Cash : IEquatable<Cash>
 
     public override int GetHashCode()
     {
-        unchecked
-        {
-            int hash = 17;
-            hash = hash * 23 + (Amount != null ? Amount.GetHashCode() : 0);
-            hash = hash * 23 + RegisteredAt.GetHashCode();
-            return hash;
-        }
+        return HashCode.Combine(UserId, Amount, RegisteredAt);
     }
 }
 

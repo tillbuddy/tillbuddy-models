@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Metrics;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using TillBuddy.Models.Exceptions;
 
 namespace TillBuddy.Models;
@@ -77,11 +76,6 @@ public sealed class Currency : IEquatable<Currency>
 
     public override int GetHashCode()
     {
-        unchecked
-        {
-            int hash = 17;
-            hash = hash * 23 + (Value != null ? Value.GetHashCode() : 0);
-            return hash;
-        }
+        return HashCode.Combine(Value);
     }
 }

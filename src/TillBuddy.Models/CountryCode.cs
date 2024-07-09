@@ -62,4 +62,14 @@ public sealed class CountryCode : IEquatable<CountryCode>
 
         return true;
     }
+
+    public override bool Equals(object? obj)
+    {
+        return Equals(obj as CountryCode);
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Value);
+    }
 }

@@ -56,16 +56,6 @@ public sealed class Address : IEquatable<Address>
 
     public override int GetHashCode()
     {
-        unchecked 
-        {
-            int hash = 17;
-            hash = hash * 23 + (AddressLine != null ? AddressLine.GetHashCode() : 0);
-            hash = hash * 23 + (City != null ? City.GetHashCode() : 0);
-            hash = hash * 23 + (PostalCode != null ? PostalCode.GetHashCode() : 0);
-            hash = hash * 23 + (Country != null ? Country.GetHashCode() : 0);
-            hash = hash * 23 + (Coordinates != null ? Coordinates.GetHashCode() : 0);
-            hash = hash * 23 + (Location != null ? Location.GetHashCode() : 0);
-            return hash;
-        }
+        return HashCode.Combine(AddressLine, City, PostalCode, Country, Coordinates, Location);
     }
 }

@@ -130,6 +130,6 @@ public sealed class Coordinates : IEquatable<Coordinates>
 
     public override int GetHashCode()
     {
-        throw new NotImplementedException();
+        return HashCode.Combine(Latitude, Longitude);
     }
 }

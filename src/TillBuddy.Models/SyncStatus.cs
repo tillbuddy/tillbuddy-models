@@ -1,4 +1,4 @@
-﻿namespace TillBuddy.SDK.API.OutputModels;
+﻿namespace TillBuddy.Models;
 
 public class SyncStatusResponse
 {
