@@ -7,3 +7,8 @@ public interface IIntegrationEvent : INotification
 {
 
 }
+
+public interface IDomainEvent : INotification
+{
+
+}
