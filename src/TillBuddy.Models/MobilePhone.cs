@@ -1,8 +1,7 @@
 ﻿using System.Text.RegularExpressions;
-using TillBuddy.Models.Exceptions;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using TillBuddy.SDK.Model.Exceptions;
 
-namespace TillBuddy.Models;
+namespace TillBuddy.SDK.Model;
 
 /// <summary>
 /// https://en.wikipedia.org/wiki/E.164

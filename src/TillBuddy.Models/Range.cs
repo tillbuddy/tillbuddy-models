@@ -1,4 +1,4 @@
-﻿namespace TillBuddy.Models;
+﻿namespace TillBuddy.SDK.Model;
 
 public class Range<T> where T : IComparable<T>, ICloneable
 {

@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace TillBuddy.Models;
+namespace TillBuddy.SDK.Model;
 
 public class LocalizedAssetReference : ICloneable
 {

@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace TillBuddy.Models;
+﻿namespace TillBuddy.SDK.Model;
 
 public class LocalizedAssetDetails : ICloneable
 {
@@ -24,17 +22,17 @@ public class LocalizedAssetDetails : ICloneable
 
     public LocalizedText FileSize { get; set; } = null!;
 
-    public Dictionary<string, TillBuddy.Models.Attribute> Attributes { get; set; } = null!;
+    public Dictionary<string, Attribute> Attributes { get; set; } = null!;
 
     public List<string> Tags { get; set; } = null!;
 
     public object Clone()
     {
-        var attribute = new Dictionary<string, Models.Attribute>(StringComparer.InvariantCultureIgnoreCase);
+        var attribute = new Dictionary<string, Attribute>(StringComparer.InvariantCultureIgnoreCase);
 
         foreach (var (key, value) in Attributes)
         {
-            attribute[key] = (TillBuddy.Models.Attribute) value.Clone();
+            attribute[key] = (Attribute) value.Clone();
         }
 
         return new LocalizedAssetDetails
@@ -49,7 +47,7 @@ public class LocalizedAssetDetails : ICloneable
             Filename = (LocalizedText) (Filename?.Clone() ?? new()),
             ContentType = ContentType,
             FileSize = (LocalizedText) (FileSize?.Clone() ?? new()),
-            Attributes = new Dictionary<string, TillBuddy.Models.Attribute>(Attributes),
+            Attributes = new Dictionary<string, Attribute>(Attributes),
             Tags = new List<string>(Tags)
         };
     }

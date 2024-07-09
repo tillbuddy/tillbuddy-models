@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
-using TillBuddy.Models.Exceptions;
+using TillBuddy.SDK.Model.Exceptions;
 
-namespace TillBuddy.Models;
+namespace TillBuddy.SDK.Model;
 
 /// <summary>
 /// https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2

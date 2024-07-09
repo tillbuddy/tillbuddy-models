@@ -1,4 +1,4 @@
-﻿namespace TillBuddy.Models.Exceptions;
+﻿namespace TillBuddy.SDK.Model.Exceptions;
 
 public class CurrencyArgumentFormatException(string ArgumentName, string Format, string Value) : Exception
 {

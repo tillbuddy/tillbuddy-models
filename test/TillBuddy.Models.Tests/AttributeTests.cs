@@ -1,11 +1,13 @@
-﻿namespace TillBuddy.Models.Tests;
+﻿using TillBuddy.SDK.Model;
+
+namespace TillBuddy.Models.Tests;
 
 public class AttributeTests
 {
     [Fact]
     public void DefaultConstructor_InitializesPropertiesCorrectly()
     {
-        var attribute = new Attribute();
+        var attribute = new TillBuddy.SDK.Model.Attribute();
 
         Assert.Equal("", attribute.AttributeId);
         Assert.Equal("", attribute.DisplayName);
@@ -28,7 +30,7 @@ public class AttributeTests
 
         var value = "Test Value";
 
-        var attribute = new Attribute(
+        var attribute = new SDK.Model.Attribute(
             attributeId,
             displayName, 
             value);
@@ -43,7 +45,7 @@ public class AttributeTests
     {
         var value = "Test Value";
 
-        var exception = Assert.Throws<ArgumentNullException>(() => new Attribute(
+        var exception = Assert.Throws<ArgumentNullException>(() => new SDK.Model.Attribute(
             "", 
             null, 
             value));
@@ -56,7 +58,7 @@ public class AttributeTests
     {
         var value = "Test Value";
 
-        var exception = Assert.Throws<ArgumentException>(() => new Attribute(
+        var exception = Assert.Throws<ArgumentException>(() => new SDK.Model.Attribute(
             "",
             "",
             value));
@@ -69,7 +71,7 @@ public class AttributeTests
     {
         var displayName = "Test Name";
 
-        var exception = Assert.Throws<ArgumentNullException>(() => new Attribute(
+        var exception = Assert.Throws<ArgumentNullException>(() => new SDK.Model.Attribute(
             "", 
             displayName, 
             null));

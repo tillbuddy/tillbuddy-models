@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.Json.Serialization;
 
-namespace TillBuddy.Models;
+namespace TillBuddy.SDK.Model;
 
 public class AssetReference : ICloneable
 {

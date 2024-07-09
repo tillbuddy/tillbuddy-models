@@ -1,8 +1,8 @@
 ﻿using System.Globalization;
 using System.Text.RegularExpressions;
-using TillBuddy.Models.Exceptions;
+using TillBuddy.SDK.Model.Exceptions;
 
-namespace TillBuddy.Models;
+namespace TillBuddy.SDK.Model;
 
 public sealed class Percent : IEquatable<Percent>
 {

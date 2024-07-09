@@ -1,8 +1,8 @@
 ﻿using Dawn;
 using System.Globalization;
-using TillBuddy.Models.Exceptions;
+using TillBuddy.SDK.Model.Exceptions;
 
-namespace TillBuddy.Models;
+namespace TillBuddy.SDK.Model;
 
 public sealed class Coordinates : IEquatable<Coordinates>
 {

@@ -1,6 +1,6 @@
 ﻿using Dawn;
 
-namespace TillBuddy.Models;
+namespace TillBuddy.SDK.Model;
 
 public sealed class StoreContactInformation : IEquatable<StoreContactInformation>
 {
