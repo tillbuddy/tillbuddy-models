@@ -7,8 +7,8 @@
     <RepositoryUrl>URL</RepositoryUrl>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Converters\" />
-  </ItemGroup>
+    <ItemGroup>
+	    <PackageReference Include="Dawn.Guard" Version="1.12.0" />
+    </ItemGroup>
 
 </Project>

@@ -1,14 +1,10 @@
-﻿using System.Globalization;
+﻿using Dawn;
+using System.Globalization;
+using TillBuddy.Models.Exceptions;
 
 namespace TillBuddy.Models;
 
-public interface ICoordinates : ICloneable
-{
-    public double Latitude { get; set; }
-    public double Longitude { get; set; }
-}
-
-public class Coordinates : ValueObject, ICoordinates
+public sealed class Coordinates : IEquatable<Coordinates>
 {
     private double _latitude;
 
@@ -36,7 +32,7 @@ public class Coordinates : ValueObject, ICoordinates
     /// </summary>
     public static bool TryParse(string value, out Coordinates coordinates)
     {
-        coordinates = new Coordinates();
+        coordinates = null;
 
         if (value == null) return false;
 
@@ -60,11 +56,11 @@ public class Coordinates : ValueObject, ICoordinates
     /// </summary>
     public static Coordinates Parse(string value)
     {
-        if(string.IsNullOrEmpty(value)) throw new ArgumentNullException(nameof(value));
+        Guard.Argument(() => value).NotNull();
 
         if (TryParse(value, out var coordinate)) return coordinate;
 
-        throw new ArgumentException("\"{latitude},{longitude}\"", nameof(Coordinates));
+        throw new CoordinatesArgumentFormatException(value);
     }
 
     private static bool IsValidLatitude(double latitude)
@@ -111,10 +107,20 @@ public class Coordinates : ValueObject, ICoordinates
         }
     }
 
-    protected override IEnumerable<object> GetEqualityComponents()
+    public bool Equals(Coordinates? other)
     {
-        yield return _longitude;
-        yield return _latitude;
+        if(other == null) return false;
+        float tolerance = 0.000001f; // apx 0.1 meter
+
+        if (Math.Abs(Latitude - other.Latitude) > tolerance) return false;
+        if (Math.Abs(Longitude - other.Longitude) > tolerance) return false;
+
+        return true;
+    }
+
+    public override bool Equals(object? obj)
+    {
+        return Equals(obj as Coordinates);
     }
 
     public override string ToString()
@@ -122,34 +128,8 @@ public class Coordinates : ValueObject, ICoordinates
         return string.Format("{0},{1}", Latitude.ToString("G", CultureInfo.InvariantCulture), Longitude.ToString("G", CultureInfo.InvariantCulture));
     }
 
-    public object Clone()
+    public override int GetHashCode()
     {
-        return new Coordinates(Latitude, Longitude);
+        throw new NotImplementedException();
     }
-
-    public CoordinatesResponse MapToResponse()
-    {
-        return new()
-        {
-            Latitude = Latitude,
-            Longitude = Longitude
-        };
-    }
-
-    public CoordinatesRequest MapToRequest()
-    {
-        return new()
-        {
-            Latitude = Latitude,
-            Longitude = Longitude
-        };
-    }
-}
-
-public class CoordinatesRequest : Coordinates
-{
-}
-
-public class CoordinatesResponse : Coordinates
-{
 }

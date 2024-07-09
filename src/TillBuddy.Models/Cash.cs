@@ -1,117 +1,113 @@
-﻿
+﻿using Dawn;
+
 namespace TillBuddy.Models;
 
-public interface ICash : ICloneable
+/// <summary>
+/// Money registred by one person at a specific time
+/// </summary>
+public sealed class Cash : IEquatable<Cash>
 {
-    public string UserId { get; set; }
+    public Guid UserId { get; set; }
     public Money Amount { get; set; }
     public DateTime RegisteredAt { get; set; }
-}
 
-public class Cash : ValueObject, ICash
-{
-    public string UserId { get; set; } = null!;
-    public Money Amount { get; set; } = null!;
-    public DateTime RegisteredAt { get; set; }
-
-    public Cash() { }
-
-    public Cash(
-       string userId,
-       string amount,
-       DateTime registeredAt)
+    public Cash() 
     {
-        if (string.IsNullOrEmpty(userId)) throw new ArgumentNullException(nameof(userId));
-        if (string.IsNullOrEmpty(amount)) throw new ArgumentNullException(nameof(amount));
-
-        UserId = userId;
-        Amount = Money.Parse(amount);
-        RegisteredAt = registeredAt;
+        UserId = Guid.Empty;
+        Amount = new Money();
+        RegisteredAt = DateTime.MinValue;
     }
 
-    public Cash(
-        Guid userId,
-        Money amount,
-        DateTime registeredAt)
+    public Cash(Guid userId,
+                Money amount,
+                DateTime registeredAt)
     {
-        if (userId == Guid.Empty) throw new ArgumentNullException(nameof(userId));
-        if (amount is null) throw new ArgumentNullException(nameof(amount));
+        Guard.Argument(() => userId).NotDefault();
+        Guard.Argument(() => amount).NotNull();
+        Guard.Argument(() => registeredAt).NotDefault();
 
-        UserId = userId.ToString();        
+        UserId = userId;
         Amount = amount;
         RegisteredAt = registeredAt;
     }
 
-    protected override IEnumerable<object> GetEqualityComponents()
+    public static Cash Parse(CashRequest source)
     {
-        yield return UserId;
-        yield return Amount.Amount;
-        yield return Amount.Currency;
-        yield return RegisteredAt;
-    }
+        Guard.Argument(() => source).NotNull();
+        Guard.Argument(() => source.UserId).NotEqual(Guid.Empty);
 
-    public Cash Parse(ICash source)
-    {
-        return new()
-        {
-            UserId = source.UserId,
-            Amount = source.Amount,
-            RegisteredAt = source.RegisteredAt
-        };
-    }
-
-    private T Apply<T>(T target) where T : ICash
-    {
-        target.UserId = UserId;
-        target.Amount = (Money)Amount.Clone();
-        target.RegisteredAt = RegisteredAt;
-
-        return target;
-    }
-
-    public CashResponse MapToResponse()
-    {
-        return Apply(new CashResponse());
-    }
-
-    public CashRequest MapToRequest()
-    {
-        return Apply(new CashRequest());
-    }
-
-    public virtual object Clone()
-    {
         return new Cash
-        {
-            Amount = Amount,
-            RegisteredAt = RegisteredAt,
-            UserId = UserId
-        };
+            (
+                source.UserId,
+                Money.Parse(source.Amount),
+                source.RegisteredAt
+            );
     }
-}
 
-public class CashRequest : Cash
-{
-    public override object Clone()
-    {
-        return new CashRequest
-        {
-            Amount = Amount,
-            RegisteredAt = RegisteredAt,
-            UserId = UserId
-        };
-    }
-}
-
-public class CashResponse : Cash
-{
-    public override object Clone()
+    public CashResponse ToResponse()
     {
         return new CashResponse
         {
-            Amount = Amount,
-            RegisteredAt = RegisteredAt,
-            UserId = UserId
+            UserId = UserId,
+            Amount = Amount.ToString(),
+            RegisteredAt = RegisteredAt
         };
     }
+
+    public bool Equals(Cash? other)
+    {
+        if (UserId != other?.UserId) return false;
+
+        if (Amount != other.Amount) return false;
+
+        if (RegisteredAt != other.RegisteredAt) return false;
+
+        return true;
+    }
+
+    public override bool Equals(object? obj)
+    {
+        return Equals(obj as Cash);
+    }
+
+    public override int GetHashCode()
+    {
+        unchecked
+        {
+            int hash = 17;
+            hash = hash * 23 + (Amount != null ? Amount.GetHashCode() : 0);
+            hash = hash * 23 + RegisteredAt.GetHashCode();
+            return hash;
+        }
+    }
+}
+
+public class CashRequest
+{
+    public Guid UserId { get; set; }
+    /// <summary>
+    /// Amount in format "amount currency"
+    /// 
+    /// Example) "100.00 NOK"
+    /// </summary>
+    public string Amount { get; set; } = null!;
+    /// <summary>
+    /// UTC time when the cash was registered
+    /// </summary>
+    public DateTime RegisteredAt { get; set; }
+}
+
+public class CashResponse
+{
+    public Guid UserId { get; set; }
+    /// <summary>
+    /// Amount in format "amount currency"
+    /// 
+    /// Example) "100.00 NOK"
+    /// </summary>
+    public string Amount { get; set; } = null!;
+    /// <summary>
+    /// UTC time when the cash was registered
+    /// </summary>
+    public DateTime RegisteredAt { get; set; }
 }

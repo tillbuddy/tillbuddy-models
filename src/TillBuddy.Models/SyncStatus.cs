@@ -1,41 +1,47 @@
-﻿namespace TillBuddy.Models;
+﻿namespace TillBuddy.SDK.API.OutputModels;
 
-public interface ISyncStatus
+public class SyncStatusResponse
 {
-    public IEnumerable<SyncStatusSuccess> Success { get; }
-    public IEnumerable<SyncStatusFail> Fail { get; }
+    public List<SyncStatusSuccess> Success { get; set; } = [];
+    public List<SyncStatusFail> Fail { get; set; } = [];
 }
 
-public class SyncStatus : ISyncStatus
+public class SyncStatusSuccess
 {
-    protected List<SyncStatusSuccess> _success { get; set; } = new();
-    protected List<SyncStatusFail> _fail { get; set; } = new();
-    
-    public IEnumerable<SyncStatusSuccess> Success
-    {
-        get { return _success; }
-    }
+    public Guid TenantId { get; set; }
+    public string Id { get; set; }
+    public string ExternalId { get; set; }
 
-    public IEnumerable<SyncStatusFail> Fail
+    public SyncStatusSuccess(
+        Guid tenantId,
+        string id,
+        string externalId)
     {
-        get { return _fail; }
-    }
-
-    public void Add(SyncStatusSuccess success)
-    {
-        _success.Add(success);
-    }
-
-    public void Add(SyncStatusFail fail)
-    {
-        _fail.Add(fail);
+        if (tenantId == Guid.Empty) throw new ArgumentNullException(nameof(tenantId));
+        TenantId = tenantId;
+        if (string.IsNullOrEmpty(id)) throw new ArgumentNullException(nameof(id));
+        Id = id;
+        ExternalId = externalId ?? throw new ArgumentNullException(nameof(externalId));
     }
 }
 
-public class SyncStatusResponse : SyncStatus
+public class SyncStatusFail
 {
-}
+    public Guid TenantId { get; set; }
+    public string Id { get; set; }
+    public string ExternalId { get; set; }
+    public string Reason { get; set; }
 
-public class SyncStatusRequest : SyncStatus
-{   
+    public SyncStatusFail(
+        Guid tenantId,
+        string id,
+        string externalId,
+        string reason)
+    {
+        if (tenantId == Guid.Empty) throw new ArgumentNullException(nameof(tenantId));
+        TenantId = tenantId;
+        Id = id;
+        ExternalId = externalId ?? throw new ArgumentNullException(nameof(externalId));
+        Reason = reason;
+    }
 }

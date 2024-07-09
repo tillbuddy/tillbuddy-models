@@ -1,17 +1,25 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Diagnostics.Metrics;
+using System.Text.RegularExpressions;
+using TillBuddy.Models.Exceptions;
 
 namespace TillBuddy.Models;
 
-public class Currency : ValueObject
+/// <summary>
+/// https://en.wikipedia.org/wiki/ISO_4217
+/// </summary>
+public sealed class Currency : IEquatable<Currency>
 {
     private const string RegexPattern = "^[a-zA-Z]{3}$";
     private static readonly Regex Regex = new Regex(RegexPattern);
 
     public string Value { get; set; }
 
-    public Currency() 
-    { 
-        Value = string.Empty;
+    /// <summary>
+    /// Default constructor for Currency, sets Currency to NOK
+    /// </summary>
+    public Currency()
+    {
+        Value = "NOK";
     }
 
     public Currency(string value)
@@ -21,7 +29,7 @@ public class Currency : ValueObject
 
     public static implicit operator string(Currency currency)
     {
-        return currency.ToString();
+        return currency?.ToString() ?? string.Empty;
     }
 
     public static implicit operator Currency(string money)
@@ -33,7 +41,7 @@ public class Currency : ValueObject
     {
         if (TryParse(value, out var currency)) return currency;
 
-        throw new ArgumentException($"ISO-4217 \"{RegexPattern}\"", nameof(value));
+        throw new MoneyArgumentFormatException(nameof(Currency), $"ISO-4217 \"{RegexPattern}\"", value);
     }
 
     public static bool TryParse(string value, out Currency currency)
@@ -43,7 +51,6 @@ public class Currency : ValueObject
         if (value == null) return false;
 
         var matches = Regex.Matches(value);
-
         if (matches.Count == 1)
         {
             currency = new Currency(value);
@@ -58,8 +65,23 @@ public class Currency : ValueObject
         return Value;
     }
 
-    protected override IEnumerable<object> GetEqualityComponents()
+    public bool Equals(Currency? other)
     {
-        yield return Value;
+        return string.Compare(Value, other?.Value, StringComparison.CurrentCultureIgnoreCase) == 0;
+    }
+
+    public override bool Equals(object? obj)
+    {
+        return Equals(obj as Currency);
+    }
+
+    public override int GetHashCode()
+    {
+        unchecked
+        {
+            int hash = 17;
+            hash = hash * 23 + (Value != null ? Value.GetHashCode() : 0);
+            return hash;
+        }
     }
 }

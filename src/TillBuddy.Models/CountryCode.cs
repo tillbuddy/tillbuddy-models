@@ -1,12 +1,12 @@
 ﻿using System.Text.RegularExpressions;
+using TillBuddy.Models.Exceptions;
 
 namespace TillBuddy.Models;
-
 
 /// <summary>
 /// https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
 /// </summary>
-public sealed class CountryCode : ValueObject
+public sealed class CountryCode : IEquatable<CountryCode>
 {
     private const string RegexPattern = "^[a-zA-Z]{2}$";
     private static readonly Regex Regex = new Regex(RegexPattern);
@@ -25,14 +25,14 @@ public sealed class CountryCode : ValueObject
 
     public static implicit operator string(CountryCode countryCode)
     {
-        return countryCode.ToString();
+        return countryCode.Value;
     }
 
     public static CountryCode Parse(string value)
     {
         if (TryParse(value, out var countryCode)) return countryCode;
 
-        throw new ArgumentException($"ISO 3166-1 alpha-2 (\"{RegexPattern}\")", nameof(CountryCode));
+        throw new CountryArgumentFormatException(nameof(CountryCode), $"ISO 3166-1 alpha-2 (\"{RegexPattern}\")", value);
     }
 
     public static bool TryParse(string value, out CountryCode countryCode)
@@ -56,8 +56,10 @@ public sealed class CountryCode : ValueObject
         return Value;
     }
 
-    protected override IEnumerable<object> GetEqualityComponents()
+    public bool Equals(CountryCode? other)
     {
-        yield return Value;
+        if (Value != other?.Value) return false;
+
+        return true;
     }
 }

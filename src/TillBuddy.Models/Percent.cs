@@ -1,9 +1,10 @@
 ﻿using System.Globalization;
 using System.Text.RegularExpressions;
+using TillBuddy.Models.Exceptions;
 
 namespace TillBuddy.Models;
 
-public class Percent : ValueObject
+public sealed class Percent : IEquatable<Percent>
 {
     private const string RegexPattern = "((?<number>.+)%$)";
     private static readonly Regex Regex = new Regex(RegexPattern);
@@ -40,7 +41,7 @@ public class Percent : ValueObject
     {
         if (TryParse(value, out var percent))
             return percent;
-        throw new ArgumentException($"\"{RegexPattern}\"", nameof(Percent));
+        throw new PercentArgumentFormatException(nameof(Percent), $"\"{RegexPattern}\"", value);
     }
 
     public static bool TryParse(string value, out Percent percent)
@@ -70,9 +71,12 @@ public class Percent : ValueObject
         return $"{Number.ToString("F2", CultureInfo.InvariantCulture)}%";
     }
 
-    protected override IEnumerable<object> GetEqualityComponents()
+    public bool Equals(Percent? other)
     {
-        yield return Number;
-        yield return Percentage;
+        if (Percentage != other?.Percentage) return false;
+
+        if (Number!= other.Number) return false;
+
+        return true;
     }
 }

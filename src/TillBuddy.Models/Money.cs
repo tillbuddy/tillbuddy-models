@@ -1,59 +1,56 @@
-﻿using System.Diagnostics.Metrics;
+﻿using Dawn;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using TillBuddy.Models.Exceptions;
 
 namespace TillBuddy.Models;
 
-public interface IMoney : ICloneable
-{
-    public decimal Amount { get; set; }
-    public string Currency { get; set; }
-
-
-    public MoneyResponse MapToResponse()
-    {
-        return new()
-        {
-            Amount = Amount,
-            Currency = Currency
-        };
-    }
-    public MoneyRequest MapToRequest()
-    {
-        return new()
-        {
-            Amount = Amount,
-            Currency = Currency
-        };
-    }
-}
-
-public class Money : ValueObject, IMoney
+public sealed class Money : IEquatable<Money>
 {
     private const string RegexPattern = "((?<amount>.+) (?<currency>.+)$)";
     private static readonly Regex Regex = new Regex(RegexPattern);
-
     public decimal Amount { get; set; }
-    public string Currency { get; set; } = null!;
+    public Currency Currency { get; set; } = null!;
 
-    public Money() { }
+    /// <summary>
+    /// Default constructor for Money, sets Amount to 0 and Currency to NOK
+    /// </summary>
+    public Money()
+    {
+        Amount = 0;
+        Currency = Currency.Parse("NOK");
+    }
 
     public Money(string money)
     {
+        Amount = 0;
+
         ParseToSelf(money);
     }
 
-    public Money Parse(IMoney money)
+    public Money(decimal amount, Currency currency)
     {
-        return new Money(money.Amount, money.Currency);
+        Guard.Argument(() => currency).NotNull();
+
+        Amount = amount;
+        Currency = currency;
     }
+
+    public Money(decimal amount, string currency)
+    {
+        Guard.Argument(() => currency).NotNull();
+
+        Currency = Currency.Parse(currency);
+        Amount = amount;
+    }
+
 
     private void ParseToSelf(string value)
     {
         // Validate expression with regex
         var matches = Regex.Matches(value);
         if (matches.Count != 1)
-            throw new ArgumentException(nameof(Money), $"\"{RegexPattern}\"");
+            throw new MoneyArgumentFormatException(nameof(Money), $"\"{RegexPattern}\"", value);
 
         var amountValue = matches[0].Groups["amount"].Value;
         var currencyValue = matches[0].Groups["currency"].Value;
@@ -64,7 +61,7 @@ public class Money : ValueObject, IMoney
 
     private void ParseCurrencyToSelf(string currencyValue)
     {
-        var currency = Models.Currency.Parse(currencyValue);
+        var currency = Currency.Parse(currencyValue);
 
         Currency = currency;
     }
@@ -72,30 +69,28 @@ public class Money : ValueObject, IMoney
     private void ParseAmountToSelf(string amountValue)
     {
         if (!decimal.TryParse(amountValue, NumberStyles.Number, CultureInfo.InvariantCulture, out var amount))
-            throw new ArgumentException("Money.Amount", "decimal \"NumberStyles.Number\"");
+            throw new MoneyArgumentFormatException("Money.Amount", "decimal \"NumberStyles.Number\"", amountValue);
 
         Amount = amount;
     }
 
-    public Money(decimal amount, Currency currency)
+    public static Money Parse(MoneyRequest money)
     {
-        Amount = amount;
-        Currency = currency;
+        return new Money(money.Amount, money.Currency);
     }
 
-    public Money(decimal amount, string currency)
+
+    public static Money Parse(MoneyResponse money)
     {
-        if (string.IsNullOrEmpty(currency)) throw new ArgumentException("Currency can't be empty", nameof(currency));
-
-        Currency = Models.Currency.Parse(currency);
-        Amount = amount;
+        return new Money(money.Amount, money.Currency);
     }
+
 
     public static Money Parse(string value)
     {
         if (TryParse(value, out var money))
             return money;
-        throw new Exception($"Invalid format: \"{RegexPattern}\"");
+        throw new MoneyArgumentFormatException(nameof(Money), $"\"{RegexPattern}\"", value);
     }
 
     public static bool TryParse(string value, out Money money)
@@ -115,11 +110,35 @@ public class Money : ValueObject, IMoney
         }
     }
 
-    public static implicit operator string(Money money)
+    public static implicit operator string(Money? money)
     {
-        return money.ToString();
+        return money?.ToString() ?? string.Empty;
     }
 
+    public MoneyResponse ToResponse()
+    {
+        return new()
+        {
+            Amount = Amount,
+            Currency = Currency.ToString()
+        };
+    }
+
+    public MoneyRequest ToRequest()
+    {
+        return new()
+        {
+            Amount = Amount,
+            Currency = Currency.ToString()
+        };
+    }
+
+    /// <summary>
+    /// Return the string representation of the Money object in the format "amount currency" where amount is formatted with two decimal places amd invariant culture
+    /// 
+    /// Example: "100.00 NOK"
+    /// </summary>
+    /// <returns></returns>
     public override string ToString()
     {
         return $"{Amount.ToString("F2", CultureInfo.InvariantCulture)} {Currency}";
@@ -130,10 +149,13 @@ public class Money : ValueObject, IMoney
         return money.Currency.Equals(Currency);
     }
 
+    // Add money to the current money object.
+    //
+    // If the currency is different, throw an exception
     public Money Add(Money money)
     {
         if (!HasSameCurrency(money))
-            throw new Exception($"Money has different currency. Current: {Currency}. Compared: {money.Currency}");
+            throw new CurrencyMismatchException(Currency, money.Currency);
 
         Amount += money.Amount;
 
@@ -150,60 +172,46 @@ public class Money : ValueObject, IMoney
         return this;
     }
 
-    public MoneyResponse MapToResponse()
+    public bool Equals(Money? other)
     {
-        return new()
+        if(other == null) return false; 
+
+        if (string.Compare(Currency, other.Currency) != 0) return false;
+
+        if (Amount != other.Amount) return false;
+
+        return true;
+    }
+
+    public override bool Equals(object? obj)
+    {
+        return Equals(obj as Money);
+    }
+
+    public override int GetHashCode()
+    {
+        unchecked
         {
-            Amount = Amount,
-            Currency = Currency,
-        };
-    }
-
-    public MoneyRequest MapToRequest()
-    {
-        return new()
-        {
-            Amount = Amount,
-            Currency = Currency,
-        };
-    }
-
-    protected override IEnumerable<object> GetEqualityComponents()
-    {
-        yield return Amount;
-        yield return Currency;
-    }
-
-    public virtual object Clone()
-    {
-        return new Money(Amount, Currency);
+            int hash = 17;
+            hash = hash * 23 + (Currency != null ? Currency.GetHashCode() : 0);
+            hash = hash * 23 + Amount.GetHashCode();
+            return hash;
+        }
     }
 }
 
-public class MoneyRequest : Money
+public class MoneyRequest
 {
-    public MoneyRequest() { }
-
-    public MoneyRequest(decimal amount, Currency currency) : base(amount, currency) { }
-
-    public MoneyRequest(decimal amount, string currency) : base(amount, currency) { }
-
-    public override object Clone()
-    {
-        return new MoneyRequest(Amount, Currency);
-    }
+    public decimal Amount { get; set; }
+    public string Currency { get; set; } = null!;
 }
 
-public class MoneyResponse : Money
+
+public class MoneyResponse
 {
-    public MoneyResponse() { }
-
-    public MoneyResponse(decimal amount, Currency currency) : base(amount, currency) { }
-
-    public MoneyResponse(decimal amount, string currency) : base(amount, currency) { }
-
-    public override object Clone()
-    {
-        return new MoneyResponse(Amount, Currency);
-    }
+    public decimal Amount { get; set; }
+    public string Currency { get; set; } = null!;
 }
+
+
+
