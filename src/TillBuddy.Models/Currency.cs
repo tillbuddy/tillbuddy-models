@@ -1,4 +1,6 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
+using TillBuddy.Models.Converters;
 using TillBuddy.SDK.Model.Exceptions;
 
 namespace TillBuddy.SDK.Model;
@@ -6,6 +8,7 @@ namespace TillBuddy.SDK.Model;
 /// <summary>
 /// https://en.wikipedia.org/wiki/ISO_4217
 /// </summary>
+[JsonConverter(typeof(JsonCurrencyConverter))]
 public sealed class Currency : IEquatable<Currency>
 {
     private const string RegexPattern = "^[a-zA-Z]{3}$";
@@ -26,7 +29,7 @@ public sealed class Currency : IEquatable<Currency>
         Value = value.ToUpperInvariant();
     }
 
-    public static implicit operator string(Currency currency)
+    public static implicit operator string(Currency? currency)
     {
         return currency?.ToString() ?? string.Empty;
     }

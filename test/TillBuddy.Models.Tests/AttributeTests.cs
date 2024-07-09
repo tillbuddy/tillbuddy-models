@@ -78,4 +78,38 @@ public class AttributeTests
 
         Assert.Equal("value", exception.ParamName);
     }
+
+    [Fact]
+    public void SerializeObject_ExcludesNullProperties_UsingSystemTextJson()
+    {
+        // Create an instance of Attribute with some properties set to null
+        var attribute = new SDK.Model.Attribute(
+            "A1",
+            "Attribute Name",
+            "Test Value")
+        {
+            LocalizedValue = null,
+            Integer = null,
+            Decimal = null,
+            Bool = null,
+            DateTime = null,
+            Values = null,
+            LocalizedValues = null
+        };
+
+        // Serialize the object to JSON
+        var json = System.Text.Json.JsonSerializer.Serialize(attribute);
+
+        // Assert that the JSON does not contain the null properties
+        Assert.DoesNotContain("\"LocalizedValue\":", json);
+        Assert.DoesNotContain("\"Integer\":", json);
+        Assert.DoesNotContain("\"Decimal\":", json);
+        Assert.DoesNotContain("\"Bool\":", json);
+        Assert.DoesNotContain("\"DateTime\":", json);
+        Assert.DoesNotContain("\"Values\":", json);
+        Assert.DoesNotContain("\"LocalizedValues\":", json);
+
+        Assert.Contains("\"DisplayName\":", json);
+        Assert.Contains("\"Value\":", json);
+    }
 }

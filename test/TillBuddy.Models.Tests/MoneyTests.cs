@@ -1,12 +1,13 @@
 ﻿using FluentAssertions;
+using System.Text.Json;
+using TillBuddy.Models.Tests.Fixture;
 using TillBuddy.SDK.Model;
 using TillBuddy.SDK.Model.Exceptions;
 
 namespace TillBuddy.Models.Tests;
 
-public class MoneyTests 
+public class MoneyTests : IClassFixture<JsonOptionFixture>
 {
-
     public static TheoryData<string> InvalidCtorValues()
     {
         return new TheoryData<string>
@@ -33,8 +34,8 @@ public class MoneyTests
     {
         return new TheoryData<string>
         {
-            @" { ""amount"": 25, ""currency"": ""NOK"" }",
-            @" { ""amount"": 25.0, ""currency"": ""NOK"" }"
+            @" { ""Amount"": 25, ""Currency"": ""NOK"" }",
+            @" { ""Amount"": 25.0, ""Currency"": ""NOK"" }"
         };
     }
 
@@ -138,5 +139,21 @@ public class MoneyTests
         mon1.AddRange(mon2);
 
         mon1.Amount.Should().Be(50);
+    }
+
+    [Theory, MemberData(nameof(JsonValue))]
+    public void Parse_amount_from_json(string value)
+    {
+        var actual = JsonSerializer.Deserialize<Money>(value);
+
+        actual.Amount.Should().Be(25);
+    }
+
+    [Theory, MemberData(nameof(JsonValue))]
+    public void Parse_currency_from_json(string value)
+    {
+        var actual = JsonSerializer.Deserialize<Money>(value);
+
+        actual.Currency.Value.Should().Be("NOK");
     }
 }

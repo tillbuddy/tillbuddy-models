@@ -1,4 +1,5 @@
 ﻿using Dawn;
+using System.Text.Json.Serialization;
 
 namespace TillBuddy.SDK.Model;
 
@@ -35,20 +36,28 @@ public class Attribute : ICloneable
 
     public string Value { get; set; }
 
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public DataType DataType { get; set; }
 
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public LocalizedText? LocalizedValue { get; set; }
 
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public int? Integer { get; set; }
 
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public decimal? Decimal { get; set; }
 
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public bool? Bool { get; set; }
 
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public DateTime? DateTime { get; set; }
 
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public IEnumerable<string>? Values { get; set; }
-    
+
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public IEnumerable<LocalizedText>? LocalizedValues { get; set; }
 
     public object Clone()

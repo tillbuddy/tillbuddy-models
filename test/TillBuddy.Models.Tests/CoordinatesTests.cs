@@ -1,8 +1,9 @@
 ﻿using FluentAssertions;
+using Newtonsoft.Json.Linq;
 using TillBuddy.SDK.Model;
 using TillBuddy.SDK.Model.Exceptions;
 
-namespace TillBuddy.SDK.Tests;
+namespace TillBuddy.Models.Tests;
 
 public class CoordinatesTests
 {
@@ -67,5 +68,13 @@ public class CoordinatesTests
 
         act.Should().NotThrow()
            .And.Subject.Invoke().Should().BeEquivalentTo(sut);
+    }
+
+    [Fact]
+    public void Empty_coordinate_should_be_0_0()
+    {
+        var coordinate = new Coordinates();
+
+        coordinate.ToString().Should().Be("0,0");
     }
 }

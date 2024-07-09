@@ -23,7 +23,7 @@ public sealed class MobilePhone : IEquatable<MobilePhone>
         Value = value;
     }
 
-    public static implicit operator string(MobilePhone mobilePhone)
+    public static implicit operator string(MobilePhone? mobilePhone)
     {
         return mobilePhone?.ToString() ?? string.Empty;
     }

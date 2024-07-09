@@ -20,9 +20,9 @@ public sealed class PostalCode : IEquatable<PostalCode>
         Value = value;
     }
 
-    public static implicit operator string(PostalCode postalCode)
+    public static implicit operator string(PostalCode? postalCode)
     {
-        return postalCode.Value;
+        return postalCode?.Value ?? string.Empty;
     }
 
     public static PostalCode Parse(string value)

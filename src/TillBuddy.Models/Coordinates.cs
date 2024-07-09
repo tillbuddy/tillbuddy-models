@@ -32,7 +32,7 @@ public sealed class Coordinates : IEquatable<Coordinates>
     /// </summary>
     public static bool TryParse(string value, out Coordinates coordinates)
     {
-        coordinates = null;
+        coordinates = new Coordinates();
 
         if (value == null) return false;
 
@@ -116,6 +116,11 @@ public sealed class Coordinates : IEquatable<Coordinates>
         if (Math.Abs(Longitude - other.Longitude) > tolerance) return false;
 
         return true;
+    }
+
+    public static implicit operator string(Coordinates? coordinates)
+    {
+        return coordinates?.ToString() ?? string.Empty;
     }
 
     public override bool Equals(object? obj)
