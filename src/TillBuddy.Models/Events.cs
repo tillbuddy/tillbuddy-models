@@ -1,7 +1,6 @@
-﻿namespace TillBuddy.SDK.Model;
+﻿using MediatR;
 
-public interface INotification { }
-
+namespace TillBuddy.SDK.Model;
 
 public interface IIntegrationEvent : INotification
 {
