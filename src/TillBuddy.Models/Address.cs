@@ -17,8 +17,8 @@ public sealed class Address : IEquatable<Address>
         string? coordinates = null,
         Coordinates? location = null)
     {
-        Guard.Argument(() => addressLine).NotNull().NotEmpty();
-        Guard.Argument(() => city).NotNull().NotEmpty();
+        Guard.Argument(() => addressLine).NotNull();
+        Guard.Argument(() => city).NotNull();
         Guard.Argument(() => postalCode).NotNull();
         Guard.Argument(() => country).NotNull();
 
