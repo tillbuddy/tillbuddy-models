@@ -2,6 +2,9 @@
 
 namespace TillBuddy.SDK.Model;
 
+/// <summary>
+/// Domain model for Stock Keeping Unit
+/// </summary>
 public sealed class Sku
 {
     public string Value { get; set; } = null!;
