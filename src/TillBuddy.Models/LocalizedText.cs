@@ -174,5 +174,17 @@ public class LocalizedText : ICloneable
         }
         return true;
     }
+
+    public static implicit operator string(LocalizedText? localizedText)
+    {
+#pragma warning disable CS8603 // Suppress "Possible null reference return"
+        return localizedText?.Text;
+#pragma warning restore CS8603
+    }
+
+    public override string ToString()
+    {
+        return "";
+    }
 }
 

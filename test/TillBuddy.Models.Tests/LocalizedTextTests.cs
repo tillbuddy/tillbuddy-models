@@ -278,12 +278,34 @@ public class LocalizedTextTests// : IClassFixture<JsonOptionFixture>
     [Fact]
     public void Implicit_operator_should_set_correct_values()
     {
-        var fixture = new AutoFixture.Fixture();
         var text = Guid.NewGuid().ToString();
 
         LocalizedText localizedText = text;
 
         localizedText.Text.Should().Be(text);
 
+    }
+
+    [Fact]
+    public void Converting_to_string_should_work()
+    {
+        var text = new LocalizedText("A");
+
+        string a = text;
+        
+        text = null;
+
+        string? b = text;
+
+        a.Should().Be("A");
+        b.Should().BeNull();
+    }
+
+    [Fact]
+    public void Converting_from_string_should_work()
+    {
+        LocalizedText localizedText = "A";
+
+        localizedText.Text.Should().Be("A");
     }
 }
