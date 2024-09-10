@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using Newtonsoft.Json.Linq;
 using TillBuddy.SDK.Model;
 using TillBuddy.SDK.Model.Exceptions;
 

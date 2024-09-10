@@ -23,8 +23,6 @@ public class AttributeTests
     [Fact]
     public void ParameterizedConstructor_InitializesPropertiesCorrectly()
     {
-        var groupId = "G1";
-        var groupName = "Group Name";
         var attributeId = "A1";
         var displayName = "Attribute Name";
 

@@ -34,25 +34,32 @@ public class LocalizedText : ICloneable
         Translations = CreateTranslationDictionary();
     }
 
-    public string this[string key]
+    /// <summary>
+    /// Find the translation for the given key
+    /// 
+    /// If translation is not found, the default text is returned
+    /// </summary>
+    /// <param name="language">Language (ISO)</param>
+    /// <returns></returns>
+    public string this[string language]
     {
         get
         {
-            if(UseTranslation)
+            if (!UseTranslation) return Text;
+
+            if (Translations.TryGetValue(language, out var value))
             {
-                if(Translations.TryGetValue(key, out var value))
-                {
-                    return value;
-                }
+                return value;
             }
-            
+
+            // Fallback to the default text if no translation is not found
             return Text;
         }
         set
         {
             if (UseTranslation)
             {
-                Translations[key] = value;
+                Translations[language] = value;
             }
             else
             {
@@ -120,15 +127,10 @@ public class LocalizedText : ICloneable
         return new LocalizedText { Text = text, UseTranslation = false };
     }
 
-    public static implicit operator string(LocalizedText? localizedText)
-    {
-        return localizedText?.Text ?? string.Empty;
-    }
-
     public override bool Equals(object? obj)
     {
         if (obj == null) return false;
-        
+
         if (obj is LocalizedText other)
         {
             return Text == other.Text &&
@@ -136,24 +138,6 @@ public class LocalizedText : ICloneable
                    DictionariesEqual(Translations, other.Translations);
         }
         return false;
-    }
-
-    public static bool operator ==(LocalizedText lhs, LocalizedText rhs)
-    {
-        if (ReferenceEquals(lhs, rhs))
-        {
-            return true;
-        }
-        if (lhs is null || rhs is null)
-        {
-            return false;
-        }
-        return lhs.Equals(rhs);
-    }
-
-    public static bool operator !=(LocalizedText lhs, LocalizedText rhs)
-    {
-        return !(lhs == rhs);
     }
 
     public override int GetHashCode()

@@ -44,7 +44,9 @@ public class CashTests
 
         var actual = JsonSerializer.Deserialize<Cash>(value);
 
-        actual.Amount.Amount.Should().Be(10);
+        actual.Should().NotBeNull();
+
+        actual?.Amount.Amount.Should().Be(10);
     }
 
     [Theory, MemberData(nameof(ValidJson))]
@@ -52,7 +54,9 @@ public class CashTests
     {
         var actual = JsonSerializer.Deserialize<Cash>(value);
 
-        actual.Amount.Currency.Value.Should().Be("NOK");
+        actual.Should().NotBeNull();
+
+        actual?.Amount.Currency.Value.Should().Be("NOK");
     }
 
 }

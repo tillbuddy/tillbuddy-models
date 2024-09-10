@@ -1,5 +1,8 @@
-﻿namespace TillBuddy.SDK.Model;
+﻿using System.Text.Json.Serialization;
 
+namespace TillBuddy.SDK.Model;
+
+[JsonConverter(typeof(JsonStringEnumConverter<DataType>))]
 public enum DataType
 {
     Text,

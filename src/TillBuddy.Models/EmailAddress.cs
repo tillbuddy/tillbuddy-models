@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
 using TillBuddy.SDK.Model.Exceptions;
 
 namespace TillBuddy.SDK.Model;
@@ -6,20 +7,20 @@ namespace TillBuddy.SDK.Model;
 /// <summary>
 /// A very trivial and not a full implementation of the spec (https://tools.ietf.org/html/rfc5322#section-3.4)
 /// </summary>
-public sealed class EmailAddress : IEquatable<Currency>
+public sealed class EmailAddress
 {
     private const string RegexPattern = "^(?<localPart>[^@]+)@(?<domain>[^@]+)$";
-    private static readonly Regex Regex = new Regex(RegexPattern);
+    private static readonly Regex Regex = new Regex(RegexPattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-    public string Value { get; set; }
-
-    public EmailAddress()
-    {
-        Value = string.Empty;
-    }
+    public string Value { get; }
 
     private EmailAddress(string value)
     {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            throw new ArgumentException("Email address cannot be null or empty", nameof(value));
+        }
+
         Value = value;
     }
 
@@ -37,11 +38,10 @@ public sealed class EmailAddress : IEquatable<Currency>
 
     public static bool TryParse(string value, out EmailAddress emailAddress)
     {
-        emailAddress = new EmailAddress();
-
-        if (value == null) return false;
+        emailAddress = new EmailAddress(value);
 
         var matches = Regex.Matches(value);
+        
         if (matches.Count == 1)
         {
             emailAddress = new EmailAddress(value);
@@ -51,13 +51,23 @@ public sealed class EmailAddress : IEquatable<Currency>
         return false;
     }
 
-    public override string ToString()
+    public override string ToString() => Value;
+
+    public override int GetHashCode() => HashCode.Combine(Value);
+
+    public override bool Equals(object? obj)
     {
-        return Value;
+        if (ReferenceEquals(this, obj)) return true;
+
+        if (obj == null || GetType() != obj.GetType()) return false;
+
+        var other = (EmailAddress)obj;
+
+        return IsEmailEqual(Value, other.Value);
     }
 
-    public bool Equals(Currency? other)
+    private static bool IsEmailEqual(string first, string second)
     {
-        return Value == other?.Value;
+        return string.Equals(first, second, StringComparison.InvariantCultureIgnoreCase);
     }
 }

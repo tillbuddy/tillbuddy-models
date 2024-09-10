@@ -8,9 +8,9 @@ namespace TillBuddy.Models.Tests;
 
 public class MoneyTests : IClassFixture<JsonOptionFixture>
 {
-    public static TheoryData<string> InvalidCtorValues()
+    public static TheoryData<string?> InvalidCtorValues()
     {
-        return new TheoryData<string>
+        return new TheoryData<string?>
         {
             null,
             "",
@@ -146,7 +146,9 @@ public class MoneyTests : IClassFixture<JsonOptionFixture>
     {
         var actual = JsonSerializer.Deserialize<Money>(value);
 
-        actual.Amount.Should().Be(25);
+        actual.Should().NotBeNull();
+
+        actual?.Amount.Should().Be(25);
     }
 
     [Theory, MemberData(nameof(JsonValue))]
@@ -154,6 +156,8 @@ public class MoneyTests : IClassFixture<JsonOptionFixture>
     {
         var actual = JsonSerializer.Deserialize<Money>(value);
 
-        actual.Currency.Value.Should().Be("NOK");
+        actual.Should().NotBeNull();
+
+        actual?.Currency.Value.Should().Be("NOK");
     }
 }
