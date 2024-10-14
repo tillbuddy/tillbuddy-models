@@ -22,9 +22,9 @@ public sealed class Cash : IEquatable<Cash>
                 Money amount,
                 DateTime registeredAt)
     {
-        Guard.Argument(() => userId).NotDefault();
-        Guard.Argument(() => amount).NotNull();
-        Guard.Argument(() => registeredAt).NotDefault();
+        Guard.Argument(userId, nameof(userId)).NotDefault();
+        Guard.Argument(amount, nameof(amount)).NotNull();
+        Guard.Argument(registeredAt, nameof(registeredAt)).NotDefault();
 
         UserId = userId;
         Amount = amount;
@@ -33,8 +33,8 @@ public sealed class Cash : IEquatable<Cash>
 
     public static Cash Parse(CashRequest source)
     {
-        Guard.Argument(() => source).NotNull();
-        Guard.Argument(() => source.UserId).NotEqual(Guid.Empty);
+        Guard.Argument(source, nameof(source)).NotNull();
+        Guard.Argument(source.UserId, nameof(source.UserId)).NotEqual(Guid.Empty);
 
         return new Cash
             (

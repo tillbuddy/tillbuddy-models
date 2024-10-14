@@ -56,7 +56,7 @@ public sealed class Coordinates : IEquatable<Coordinates>
     /// </summary>
     public static Coordinates Parse(string value)
     {
-        Guard.Argument(() => value).NotNull();
+        Guard.Argument(value, nameof(value)).NotNull();
 
         if (TryParse(value, out var coordinate)) return coordinate;
 

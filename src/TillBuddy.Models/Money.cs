@@ -30,7 +30,7 @@ public sealed class Money : IEquatable<Money>
 
     public Money(decimal amount, Currency currency)
     {
-        Guard.Argument(() => currency).NotNull();
+        Guard.Argument(currency, nameof(currency)).NotNull();
 
         Amount = amount;
         Currency = currency;
@@ -38,7 +38,7 @@ public sealed class Money : IEquatable<Money>
 
     public Money(decimal amount, string currency)
     {
-        Guard.Argument(() => currency).NotNull();
+        Guard.Argument(currency, nameof(currency)).NotNull();
 
         Currency = Currency.Parse(currency);
         Amount = amount;

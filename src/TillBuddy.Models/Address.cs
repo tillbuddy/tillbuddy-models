@@ -17,10 +17,10 @@ public sealed class Address : IEquatable<Address>
         string? coordinates = null,
         Coordinates? location = null)
     {
-        Guard.Argument(() => addressLine).NotNull();
-        Guard.Argument(() => city).NotNull();
-        Guard.Argument(() => postalCode).NotNull();
-        Guard.Argument(() => country).NotNull();
+        Guard.Argument(addressLine, nameof(addressLine)).NotNull();
+        Guard.Argument(city, nameof(city)).NotNull();
+        Guard.Argument(postalCode, nameof(postalCode)).NotNull();
+        Guard.Argument(country, nameof(country)).NotNull();
 
         AddressLine = addressLine;
         City = city;

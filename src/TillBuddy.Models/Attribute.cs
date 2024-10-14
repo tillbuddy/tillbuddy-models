@@ -19,10 +19,10 @@ public class Attribute : ICloneable
         string displayName, 
         string value)
     {
-        Guard.Argument(() => attributeId).NotNull();
-        Guard.Argument(() => displayName).NotNull().NotEmpty();
+        Guard.Argument(attributeId, nameof(attributeId)).NotNull();
+        Guard.Argument(displayName, nameof(displayName)).NotNull().NotEmpty();
 
-        Guard.Argument(() => value).NotNull();
+        Guard.Argument(value, nameof(value)).NotNull();
 
         AttributeId = attributeId;
         DisplayName = displayName;

@@ -13,7 +13,7 @@ public class LocalizedText : ICloneable
 
     public LocalizedText(string text)
     {
-        Guard.Argument(() => text).NotNull();
+        Guard.Argument(text, nameof(text)).NotNull();
         
         Text = text;
         Translations = new Dictionary<string, string>();
@@ -21,7 +21,7 @@ public class LocalizedText : ICloneable
 
     public LocalizedText(IDictionary<string, string> translations)
     {
-        Guard.Argument(() => translations).NotNull();
+        Guard.Argument(translations, nameof(translations)).NotNull();
         
         Text = string.Empty;
         Translations = Clone(translations);
@@ -70,7 +70,7 @@ public class LocalizedText : ICloneable
 
     public static LocalizedText Parse(string text)
     {
-        Guard.Argument(() => text).NotNull();
+        Guard.Argument(text, nameof(text)).NotNull();
 
         return new(text);
     }

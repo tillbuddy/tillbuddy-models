@@ -16,7 +16,7 @@ public sealed class Sku
 
     public Sku(string value)
     {
-        Guard.Argument(() => value).NotNull().NotEmpty();
+        Guard.Argument(value, nameof(value)).NotNull().NotEmpty();
 
         Value = value;
     }
