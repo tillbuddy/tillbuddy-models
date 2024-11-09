@@ -1,4 +1,4 @@
-﻿using Dawn;
+﻿using Ardalis.GuardClauses;
 
 namespace TillBuddy.SDK.Model;
 
@@ -16,7 +16,7 @@ public sealed class Sku
 
     public Sku(string value)
     {
-        Guard.Argument(value, nameof(value)).NotNull().NotEmpty();
+        Guard.Against.NullOrEmpty(value, nameof(value));
 
         Value = value;
     }

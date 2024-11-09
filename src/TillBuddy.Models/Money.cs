@@ -1,4 +1,4 @@
-﻿using Dawn;
+﻿using Ardalis.GuardClauses;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using TillBuddy.SDK.Model.Exceptions;
@@ -30,7 +30,7 @@ public sealed class Money : IEquatable<Money>
 
     public Money(decimal amount, Currency currency)
     {
-        Guard.Argument(currency, nameof(currency)).NotNull();
+        Guard.Against.Null(currency, nameof(currency));
 
         Amount = amount;
         Currency = currency;
@@ -38,7 +38,7 @@ public sealed class Money : IEquatable<Money>
 
     public Money(decimal amount, string currency)
     {
-        Guard.Argument(currency, nameof(currency)).NotNull();
+        Guard.Against.Null(currency, nameof(currency));
 
         Currency = Currency.Parse(currency);
         Amount = amount;

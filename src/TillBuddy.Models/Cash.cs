@@ -1,4 +1,4 @@
-﻿using Dawn;
+﻿using Ardalis.GuardClauses;
 
 namespace TillBuddy.SDK.Model;
 
@@ -22,9 +22,9 @@ public sealed class Cash : IEquatable<Cash>
                 Money amount,
                 DateTime registeredAt)
     {
-        Guard.Argument(userId, nameof(userId)).NotDefault();
-        Guard.Argument(amount, nameof(amount)).NotNull();
-        Guard.Argument(registeredAt, nameof(registeredAt)).NotDefault();
+        Guard.Against.Default(userId, nameof(userId));
+        Guard.Against.Null(amount, nameof(amount));
+        Guard.Against.Default(registeredAt, nameof(registeredAt));
 
         UserId = userId;
         Amount = amount;
@@ -33,8 +33,8 @@ public sealed class Cash : IEquatable<Cash>
 
     public static Cash Parse(CashRequest source)
     {
-        Guard.Argument(source, nameof(source)).NotNull();
-        Guard.Argument(source.UserId, nameof(source.UserId)).NotEqual(Guid.Empty);
+        Guard.Against.Null(source, nameof(source));
+        Guard.Against.Default(source.UserId, nameof(source.UserId));
 
         return new Cash
             (

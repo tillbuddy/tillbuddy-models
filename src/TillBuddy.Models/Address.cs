@@ -1,4 +1,4 @@
-﻿using Dawn;
+﻿using Ardalis.GuardClauses;
 
 namespace TillBuddy.SDK.Model;
 
@@ -17,10 +17,11 @@ public sealed class Address : IEquatable<Address>
         string? coordinates = null,
         Coordinates? location = null)
     {
-        Guard.Argument(addressLine, nameof(addressLine)).NotNull();
-        Guard.Argument(city, nameof(city)).NotNull();
-        Guard.Argument(postalCode, nameof(postalCode)).NotNull();
-        Guard.Argument(country, nameof(country)).NotNull();
+
+        Guard.Against.Null(addressLine, nameof(addressLine));
+        Guard.Against.Null(city, nameof(city));
+        Guard.Against.Null(postalCode, nameof(postalCode));
+        Guard.Against.Null(country, nameof(country));
 
         AddressLine = addressLine;
         City = city;

@@ -1,4 +1,4 @@
-﻿using Dawn;
+﻿using Ardalis.GuardClauses;
 using System.Globalization;
 using TillBuddy.SDK.Model.Exceptions;
 
@@ -56,7 +56,7 @@ public sealed class Coordinates : IEquatable<Coordinates>
     /// </summary>
     public static Coordinates Parse(string value)
     {
-        Guard.Argument(value, nameof(value)).NotNull();
+        Guard.Against.Null(value, nameof(value));
 
         if (TryParse(value, out var coordinate)) return coordinate;
 

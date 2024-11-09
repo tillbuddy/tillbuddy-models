@@ -1,4 +1,4 @@
-﻿using Dawn;
+﻿using Ardalis.GuardClauses;
 using System.Text.Json.Serialization;
 
 namespace TillBuddy.SDK.Model;
@@ -19,10 +19,9 @@ public class Attribute : ICloneable
         string displayName, 
         string value)
     {
-        Guard.Argument(attributeId, nameof(attributeId)).NotNull();
-        Guard.Argument(displayName, nameof(displayName)).NotNull().NotEmpty();
-
-        Guard.Argument(value, nameof(value)).NotNull();
+        Guard.Against.Null(attributeId, nameof(attributeId));
+        Guard.Against.NullOrEmpty(displayName, nameof(displayName));
+        Guard.Against.Null(value, nameof(value));
 
         AttributeId = attributeId;
         DisplayName = displayName;

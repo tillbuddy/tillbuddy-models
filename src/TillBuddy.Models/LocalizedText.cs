@@ -1,4 +1,4 @@
-﻿using Dawn;
+﻿using Ardalis.GuardClauses;
 using System.Text.Json.Serialization;
 using TillBuddy.Models.Converters;
 
@@ -13,7 +13,7 @@ public class LocalizedText : ICloneable
 
     public LocalizedText(string text)
     {
-        Guard.Argument(text, nameof(text)).NotNull();
+        Guard.Against.Null(text, nameof(text));
         
         Text = text;
         Translations = new Dictionary<string, string>();
@@ -21,7 +21,7 @@ public class LocalizedText : ICloneable
 
     public LocalizedText(IDictionary<string, string> translations)
     {
-        Guard.Argument(translations, nameof(translations)).NotNull();
+        Guard.Against.Null(translations, nameof(translations));
         
         Text = string.Empty;
         Translations = Clone(translations);
@@ -70,7 +70,7 @@ public class LocalizedText : ICloneable
 
     public static LocalizedText Parse(string text)
     {
-        Guard.Argument(text, nameof(text)).NotNull();
+        Guard.Against.Null(text, nameof(text));
 
         return new(text);
     }
