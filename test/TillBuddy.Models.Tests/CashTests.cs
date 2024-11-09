@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
 using System.Text.Json;
-using TillBuddy.SDK.Model;
 
 namespace TillBuddy.Models.Tests;
 

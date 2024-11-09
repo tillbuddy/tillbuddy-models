@@ -1,6 +1,6 @@
 ﻿using Ardalis.GuardClauses;
 
-namespace TillBuddy.SDK.Model;
+namespace TillBuddy.Models;
 
 /// <summary>
 /// Domain model for Stock Keeping Unit

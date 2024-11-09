@@ -1,8 +1,7 @@
-﻿using System;
-using System.Text.RegularExpressions;
-using TillBuddy.SDK.Model.Exceptions;
+﻿using System.Text.RegularExpressions;
+using TillBuddy.Models.Exceptions;
 
-namespace TillBuddy.SDK.Model;
+namespace TillBuddy.Models;
 
 /// <summary>
 /// A very trivial and not a full implementation of the spec (https://tools.ietf.org/html/rfc5322#section-3.4)

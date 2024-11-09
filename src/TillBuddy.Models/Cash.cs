@@ -1,6 +1,6 @@
 ﻿using Ardalis.GuardClauses;
 
-namespace TillBuddy.SDK.Model;
+namespace TillBuddy.Models;
 
 /// <summary>
 /// Money registred by one person at a specific time

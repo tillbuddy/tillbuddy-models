@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace TillBuddy.SDK.Model;
+namespace TillBuddy.Models;
 
 public interface IIntegrationEvent : INotification
 {

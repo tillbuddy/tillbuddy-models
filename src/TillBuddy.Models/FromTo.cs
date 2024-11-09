@@ -1,4 +1,4 @@
-﻿namespace TillBuddy.SDK.Model;
+﻿namespace TillBuddy.Models;
 
 public class FromTo<T>(T from, T to) where T : IComparable<T>
 {

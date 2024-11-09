@@ -2,7 +2,7 @@
 using System.Text.Json.Serialization;
 using TillBuddy.Models.Converters;
 
-namespace TillBuddy.SDK.Model;
+namespace TillBuddy.Models;
 
 [JsonConverter(typeof(JsonLocalizedTextConverter))]
 public class LocalizedText : ICloneable

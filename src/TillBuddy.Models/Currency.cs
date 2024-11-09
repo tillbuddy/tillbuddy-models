@@ -1,9 +1,9 @@
 ﻿using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using TillBuddy.Models.Converters;
-using TillBuddy.SDK.Model.Exceptions;
+using TillBuddy.Models.Exceptions;
 
-namespace TillBuddy.SDK.Model;
+namespace TillBuddy.Models;
 
 /// <summary>
 /// https://en.wikipedia.org/wiki/ISO_4217

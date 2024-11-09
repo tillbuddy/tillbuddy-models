@@ -1,4 +1,4 @@
-﻿namespace TillBuddy.SDK.Model;
+﻿namespace TillBuddy.Models;
 
 public class AssetDetails : ICloneable
 {

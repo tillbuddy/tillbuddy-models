@@ -1,8 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
-using TillBuddy.Models.Converters;
 
-namespace TillBuddy.SDK.Converters;
+namespace TillBuddy.Models.Converters;
 
 public static partial class JsonConvertersExtensions
 {

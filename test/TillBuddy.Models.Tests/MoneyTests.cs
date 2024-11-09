@@ -1,8 +1,8 @@
 ﻿using FluentAssertions;
 using System.Text.Json;
 using TillBuddy.Models.Tests.Fixture;
-using TillBuddy.SDK.Model;
-using TillBuddy.SDK.Model.Exceptions;
+using TillBuddy.Models;
+using TillBuddy.Models.Exceptions;
 
 namespace TillBuddy.Models.Tests;
 

@@ -1,5 +1,5 @@
 ﻿using System.Text.Json;
-using TillBuddy.SDK.Converters;
+using TillBuddy.Models.Converters;
 
 namespace TillBuddy.Models.Tests.Fixture;
 

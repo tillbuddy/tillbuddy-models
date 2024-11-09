@@ -1,4 +1,4 @@
-﻿namespace TillBuddy.SDK.Model;
+﻿namespace TillBuddy.Models;
 
 public sealed class GenericPair<T1, T2> : IEquatable<GenericPair<T1, T2>>
 {

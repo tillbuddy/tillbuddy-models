@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
-using TillBuddy.SDK.Model.Exceptions;
+using TillBuddy.Models.Exceptions;
 
-namespace TillBuddy.SDK.Model;
+namespace TillBuddy.Models;
 
 public sealed class PostalCode : IEquatable<PostalCode>
 {

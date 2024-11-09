@@ -1,8 +1,8 @@
 ﻿using Ardalis.GuardClauses;
 using System.Globalization;
-using TillBuddy.SDK.Model.Exceptions;
+using TillBuddy.Models.Exceptions;
 
-namespace TillBuddy.SDK.Model;
+namespace TillBuddy.Models;
 
 public sealed class Coordinates : IEquatable<Coordinates>
 {

@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
-using TillBuddy.SDK.Model;
-using TillBuddy.SDK.Model.Exceptions;
+using TillBuddy.Models;
+using TillBuddy.Models.Exceptions;
 
 namespace TillBuddy.Models.Tests;
 

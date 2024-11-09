@@ -1,4 +1,4 @@
-﻿namespace TillBuddy.SDK.Model.Exceptions;
+﻿namespace TillBuddy.Models.Exceptions;
 
 public class PercentArgumentFormatException(string ArgumentName, string Format, string Value) : Exception
 {

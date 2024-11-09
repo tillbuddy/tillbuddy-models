@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using TillBuddy.SDK.Model;
+using TillBuddy.Models;
 
 namespace TillBuddy.Models.Tests;
 
