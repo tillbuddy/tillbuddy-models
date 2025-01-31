@@ -9,7 +9,7 @@ namespace TillBuddy.Models;
 public sealed class CountryCode : IEquatable<CountryCode>
 {
     private const string RegexPattern = "^[a-zA-Z]{2}$";
-    private static readonly Regex Regex = new Regex(RegexPattern);
+    private static readonly Regex Regex = new(RegexPattern, RegexOptions.Compiled);
 
     public string Value { get; set; }
 

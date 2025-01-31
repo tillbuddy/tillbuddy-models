@@ -8,7 +8,7 @@ namespace TillBuddy.Models;
 public sealed class Money : IEquatable<Money>
 {
     private const string RegexPattern = "((?<amount>.+) (?<currency>.+)$)";
-    private static readonly Regex Regex = new Regex(RegexPattern);
+    private static readonly Regex Regex = new(RegexPattern, RegexOptions.Compiled);
     public decimal Amount { get; set; }
     public Currency Currency { get; set; } = null!;
 
@@ -192,6 +192,15 @@ public sealed class Money : IEquatable<Money>
     {
         return HashCode.Combine(Currency, Amount);
     }
+
+    public static bool operator ==(Money? left, Money? right)
+    {
+        if (ReferenceEquals(left, right)) return true;
+        if (left is null || right is null) return false;
+        return left.Amount.Equals(right.Amount) && left.Currency.Equals(right.Currency);
+    }
+
+    public static bool operator !=(Money? left, Money right) => !(left == right);
 }
 
 public class MoneyRequest

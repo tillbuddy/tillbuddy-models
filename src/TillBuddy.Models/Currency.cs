@@ -12,7 +12,7 @@ namespace TillBuddy.Models;
 public sealed class Currency : IEquatable<Currency>
 {
     private const string RegexPattern = "^[a-zA-Z]{3}$";
-    private static readonly Regex Regex = new Regex(RegexPattern);
+    private static readonly Regex Regex = new(RegexPattern, RegexOptions.Compiled);
 
     public string Value { get; set; }
 
@@ -81,4 +81,18 @@ public sealed class Currency : IEquatable<Currency>
     {
         return HashCode.Combine(Value);
     }
+
+    public string ToResponse()
+    {
+        return Value;
+    }
+
+    public static bool operator ==(Currency? left, Currency? right)
+    {
+        if (ReferenceEquals(left, right)) return true;
+        if (left is null || right is null) return false;
+        return left.Value.Equals(right.Value, StringComparison.OrdinalIgnoreCase);
+    }
+
+    public static bool operator !=(Currency? left, Currency? right) => !(left == right);
 }

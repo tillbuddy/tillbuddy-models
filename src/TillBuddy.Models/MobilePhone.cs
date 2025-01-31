@@ -6,68 +6,64 @@ namespace TillBuddy.Models;
 /// <summary>
 /// https://en.wikipedia.org/wiki/E.164
 /// </summary>
-public sealed class MobilePhone : IEquatable<MobilePhone>
+public sealed class MobilePhone
 {
-    private const string RegexPattern = "^\\+[1-9]\\d{1,14}$";
-    private static readonly Regex Regex = new Regex(RegexPattern);
+    private const string RegexPattern = @"^\+[0-9]\d{1,14}$";
+    private static readonly Regex Regex = new(RegexPattern, RegexOptions.Compiled);
 
-    public string Value { get; set; }
-
-    public MobilePhone()
-    {
-        Value = string.Empty;
-    }
+    public string Value { get; }
 
     public MobilePhone(string value)
     {
+        if (!IsValid(value))
+        {
+            throw new MobilePhoneArgumentFormatException(nameof(MobilePhone), $"E.164 (\"{RegexPattern}\")", value);
+        }
+
         Value = value;
     }
 
-    public static implicit operator string(MobilePhone? mobilePhone)
-    {
-        return mobilePhone?.ToString() ?? string.Empty;
-    }
+    public static bool IsValid(string value) => !string.IsNullOrEmpty(value) && Regex.IsMatch(value);
+
+    public static implicit operator string(MobilePhone? mobilePhone) => mobilePhone?.Value ?? string.Empty;
 
     public static MobilePhone Parse(string value)
     {
-        if (TryParse(value, out var mobilePhone)) return mobilePhone;
+        if (TryParse(value, out var mobilePhone))
+        {
+            return mobilePhone;
+        }
 
         throw new MobilePhoneArgumentFormatException(nameof(MobilePhone), $"E.164 (\"{RegexPattern}\")", value);
     }
 
     public static bool TryParse(string value, out MobilePhone mobilePhone)
     {
-        mobilePhone = new MobilePhone();
-
-        if (value == null) return false;
-
-        var matches = Regex.Matches(value);
-        if (matches.Count == 1)
+        if (IsValid(value))
         {
             mobilePhone = new MobilePhone(value);
             return true;
         }
 
+        mobilePhone = null!;
         return false;
     }
 
-    public override string ToString()
-    {
-        return Value;
-    }
-
-    public bool Equals(MobilePhone? other)
-    {
-        throw new NotImplementedException();
-    }
+    public override string ToString() => Value;
 
     public override bool Equals(object? obj)
     {
-        return Equals(obj as MobilePhone);
+        return obj is MobilePhone other && string.Equals(Value, other.Value, StringComparison.OrdinalIgnoreCase);
     }
 
-    public override int GetHashCode()
+    public override int GetHashCode() => StringComparer.OrdinalIgnoreCase.GetHashCode(Value);
+
+    public static bool operator ==(MobilePhone? left, MobilePhone? right)
     {
-        return HashCode.Combine(Value);
+        if (ReferenceEquals(left, right)) return true;
+        if (left is null || right is null) return false;
+        return left.Value.Equals(right.Value, StringComparison.OrdinalIgnoreCase);
     }
+
+    public static bool operator !=(MobilePhone? left, MobilePhone? right) => !(left == right);
 }

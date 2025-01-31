@@ -4,11 +4,6 @@ namespace TillBuddy.Models;
 
 public sealed class Address : IEquatable<Address>
 {
-    public Address()
-    {
-        
-    }
-
     public Address(
         string addressLine,
         string city,
@@ -33,8 +28,8 @@ public sealed class Address : IEquatable<Address>
 
     public string AddressLine { get; set; } = null!;
     public string City { get; set; } = null!;
-    public string PostalCode { get; set; } = null!;
-    public string Country { get; set; } = null!;
+    public PostalCode PostalCode { get; set; } = null!;
+    public CountryCode Country { get; set; } = null!;
     public Coordinates? Location { get; set; }
     public string? Coordinates { get; set; }
 
@@ -59,4 +54,53 @@ public sealed class Address : IEquatable<Address>
     {
         return HashCode.Combine(AddressLine, City, PostalCode, Country, Coordinates, Location);
     }
+
+    public AddressResponse ToResponse()
+    {
+        return new AddressResponse
+        {
+            AddressLine = AddressLine,
+            City = City,
+            PostalCode = PostalCode,
+            Country = Country,
+            Coordinates = Coordinates,
+            Location = Location
+        };
+    }
+
+    public static Address Parse(AddressRequest source)
+    {
+        return new Address
+            (
+                source.AddressLine,
+                source.City,
+                PostalCode.Parse(source.PostalCode),
+                CountryCode.Parse(source.Country),
+                source.Coordinates,
+                source.Location != null ? new Coordinates(source.Location) : null
+            );
+    }
 }
+
+
+public class AddressRequest
+{
+    public string AddressLine { get; set; } = null!;
+    public string City { get; set; } = null!;
+    public string PostalCode { get; set; } = null!;
+    public string Country { get; set; } = null!;
+    public string? Location { get; set; }
+    public string? Coordinates { get; set; }
+}
+
+public class AddressResponse
+{
+    public string AddressLine { get; set; } = null!;
+    public string City { get; set; } = null!;
+    public string PostalCode { get; set; } = null!;
+    public string Country { get; set; } = null!;
+    public string? Location { get; set; }
+    public string? Coordinates { get; set; }
+}
+
+
