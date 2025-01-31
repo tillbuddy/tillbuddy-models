@@ -11,7 +11,7 @@ public sealed class CountryCode : IEquatable<CountryCode>
     private const string RegexPattern = "^[a-zA-Z]{2}$";
     private static readonly Regex Regex = new(RegexPattern, RegexOptions.Compiled);
 
-    public string Value { get; set; }
+    public string Value { get; }
 
     public CountryCode()
     {
@@ -20,7 +20,13 @@ public sealed class CountryCode : IEquatable<CountryCode>
 
     public CountryCode(string value)
     {
+        if (!string.IsNullOrEmpty(value) && !Regex.IsMatch(value))
+        {
+            throw new CountryArgumentFormatException(nameof(CountryCode), $"ISO 3166-1 alpha-2 (\"{RegexPattern}\")", value);
+        }
+
         Value = value;
+
     }
 
     public static implicit operator string(CountryCode? countryCode)
@@ -37,16 +43,19 @@ public sealed class CountryCode : IEquatable<CountryCode>
 
     public static bool TryParse(string value, out CountryCode countryCode)
     {
-        countryCode = new CountryCode();
+        if (string.IsNullOrEmpty(value))
+        {
+            countryCode = new CountryCode(string.Empty);
+            return true;
+        }
 
-        if (value == null) return false;
-
-        var matches = Regex.Matches(value);
-        if (matches.Count == 1)
+        if (Regex.IsMatch(value))
         {
             countryCode = new CountryCode(value);
             return true;
         }
+
+        countryCode = new CountryCode();
 
         return false;
     }

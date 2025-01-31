@@ -13,11 +13,16 @@ public sealed class MobilePhone
 
     public string Value { get; }
 
+    public MobilePhone()
+    {
+        Value = string.Empty;
+    }
+
     public MobilePhone(string value)
     {
-        if (!IsValid(value))
+        if (!string.IsNullOrEmpty(value) && !Regex.IsMatch(value))
         {
-            throw new MobilePhoneArgumentFormatException(nameof(MobilePhone), $"E.164 (\"{RegexPattern}\")", value);
+            throw new MobilePhoneArgumentFormatException(nameof(MobilePhone), $"E.164 (\"{RegexPattern}\") or empty string", value);
         }
 
         Value = value;
@@ -39,7 +44,7 @@ public sealed class MobilePhone
 
     public static bool TryParse(string value, out MobilePhone mobilePhone)
     {
-        if (IsValid(value))
+        if (string.IsNullOrEmpty(value) || Regex.IsMatch(value))
         {
             mobilePhone = new MobilePhone(value);
             return true;

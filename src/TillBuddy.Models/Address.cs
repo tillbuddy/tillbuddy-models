@@ -4,6 +4,14 @@ namespace TillBuddy.Models;
 
 public sealed class Address : IEquatable<Address>
 {
+    public Address()
+    {
+        AddressLine = string.Empty;
+        City = string.Empty;
+        PostalCode = new PostalCode();
+        Country = new CountryCode();
+    }
+
     public Address(
         string addressLine,
         string city,
