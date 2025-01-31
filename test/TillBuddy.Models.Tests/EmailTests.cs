@@ -40,11 +40,31 @@ public class EmailTests
     {
         var e1 = EmailAddress.Parse(emailAddress1);
         var e2 = EmailAddress.Parse(emailAddress2);
+        var r = e1 == e2;
 
         e1.Should().NotBeNull();
         e2.Should().NotBeNull();
 
         e1.Should().BeEquivalentTo(e2);
+        r.Should().BeTrue();
+    }
+
+
+    [Theory]
+    [InlineData("person1@email.com", "person2@email.com")]
+    [InlineData("person1@Email.com", "person2@email.com")]
+    [InlineData("person3.test1@email.com", "person3.test1@email.no")]
+    public void Emails_should_no_be_equal(string emailAddress1, string emailAddress2)
+    {
+        var e1 = EmailAddress.Parse(emailAddress1);
+        var e2 = EmailAddress.Parse(emailAddress2);
+        var r = e1 == e2;
+
+        e1.Should().NotBeNull();
+        e2.Should().NotBeNull();
+
+        e1.Should().NotBeEquivalentTo(e2);
+        r.Should().BeFalse();
     }
 }
 

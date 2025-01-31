@@ -21,6 +21,17 @@ public sealed class Sku
         Value = value;
     }
 
+    public static bool operator ==(Sku? left, Sku? right)
+    {
+        if (ReferenceEquals(left, right)) return true;
+        if (left is null || right is null) return false;
+        return left.Value.Equals(right.Value) && left.Value.Equals(right.Value);
+    }
+    public static bool operator !=(Sku? left, Sku? right)
+    {
+        return !(left == right);
+    }
+
     public static Sku Parse(string value)
     {
         if (TryParse(value, out var sku)) return sku;

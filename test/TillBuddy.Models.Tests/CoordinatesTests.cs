@@ -76,4 +76,21 @@ public class CoordinatesTests
 
         coordinate.ToString().Should().Be("0,0");
     }
+
+
+    [Theory]
+    [InlineData("1,1", "1,1")]
+    [InlineData("0.23,1.54", "0.23,1.54")]
+    [InlineData("90,90", "90,90")]
+    [InlineData("90,180", "90,180")]
+    public void Should_be_equal(string first, string second)
+    {
+        var a = Coordinates.Parse(first);
+        var b = Coordinates.Parse(second);
+
+        var e = a == b;
+
+        first.ToString().Should().BeEquivalentTo(second);
+        e.Should().BeTrue();
+    }
 }

@@ -23,6 +23,17 @@ public sealed class EmailAddress
         Value = value;
     }
 
+    public static bool operator ==(EmailAddress? left, EmailAddress? right)
+    {
+        if (ReferenceEquals(left, right)) return true;
+        if (left is null || right is null) return false;
+        return left.Value.Equals(right.Value, StringComparison.InvariantCultureIgnoreCase) && left.Value.Equals(right.Value, StringComparison.InvariantCultureIgnoreCase);
+    }
+    public static bool operator !=(EmailAddress? left, EmailAddress? right)
+    {
+        return !(left == right);
+    }
+
     public static implicit operator string(EmailAddress? emailAddress)
     {
         return emailAddress?.Value ?? string.Empty;

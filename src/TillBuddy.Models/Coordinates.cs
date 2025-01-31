@@ -50,6 +50,20 @@ public sealed class Coordinates : IEquatable<Coordinates>
         return true;
     }
 
+    public static bool operator ==(Coordinates? left, Coordinates? right)
+    {
+        if (ReferenceEquals(left, right)) return true;
+        if (left is null || right is null) return false;
+
+        var longitude = left.Longitude == right.Longitude;
+        var latitude = left.Latitude == right.Latitude;
+
+        return longitude && latitude;
+    }
+    public static bool operator !=(Coordinates? left, Coordinates? right)
+    {
+        return !(left == right);
+    }
 
     /// <summary>
     /// Parses coordinates in "{latitude},{longitude}" format
