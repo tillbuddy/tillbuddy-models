@@ -32,6 +32,8 @@ public sealed class MobilePhone
 
     public static implicit operator string(MobilePhone? mobilePhone) => mobilePhone?.Value ?? string.Empty;
 
+    public static implicit operator MobilePhone(string value) => new(value);
+
     public static MobilePhone Parse(string value)
     {
         if (TryParse(value, out var mobilePhone))

@@ -25,6 +25,8 @@ public sealed class PostalCode : IEquatable<PostalCode>
         return postalCode?.Value ?? string.Empty;
     }
 
+    public static implicit operator PostalCode(string value) => new(value);
+
     public static PostalCode Parse(string value)
     {
         if (TryParse(value, out var postalCode)) return postalCode;

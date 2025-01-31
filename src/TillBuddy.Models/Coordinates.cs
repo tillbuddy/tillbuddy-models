@@ -123,6 +123,8 @@ public sealed class Coordinates : IEquatable<Coordinates>
         return coordinates?.ToString() ?? string.Empty;
     }
 
+    public static implicit operator Coordinates(string value) => new(value);
+
     public override bool Equals(object? obj)
     {
         return Equals(obj as Coordinates);

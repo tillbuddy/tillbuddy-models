@@ -47,4 +47,6 @@ public sealed class Sku
     {
         return sku.ToString();
     }
+
+    public static implicit operator Sku(string value) => new(value);
 }

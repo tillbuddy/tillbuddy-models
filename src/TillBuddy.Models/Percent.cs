@@ -80,6 +80,8 @@ public sealed class Percent : IEquatable<Percent>
         return true;
     }
 
+    public static implicit operator Percent(decimal value) => new(value);
+
     public override bool Equals(object? obj)
     {
         return Equals(obj as Percent);

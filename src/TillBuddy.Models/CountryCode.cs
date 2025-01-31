@@ -34,6 +34,8 @@ public sealed class CountryCode : IEquatable<CountryCode>
         return countryCode?.Value ?? string.Empty;
     }
 
+    public static implicit operator CountryCode(string value) => new(value);
+
     public static CountryCode Parse(string value)
     {
         if (TryParse(value, out var countryCode)) return countryCode;
